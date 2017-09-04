@@ -1,0 +1,739 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <!-- Meta, title, CSS, favicons, etc. -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>Create Homework</title>
+
+    <!-- jQuery -->
+    <script src="../../node_modules/gentelella/vendors/jquery/dist/jquery.min.js"></script>
+    <!-- Bootstrap -->
+    <link href="../../node_modules/gentelella/vendors/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link href="../../node_modules/gentelella/vendors/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+    <!-- NProgress -->
+    <link href="../../node_modules/gentelella/vendors/nprogress/nprogress.css" rel="stylesheet">
+    <!-- Custom Theme Style -->
+    <link href="../../node_modules/gentelella/build/css/custom.min.css" rel="stylesheet">
+
+    <link href="../../node_modules/gentelella/vendors/jquery.tagsinput/dist/jquery.tagsinput.min.css" rel="stylesheet">
+    <!-- jQuery Tags Input -->
+    <script src="../../node_modules/gentelella/vendors/jquery.tagsinput/src/jquery.tagsinput.js"></script>
+    <!-- Bootstrap -->
+    <script src="../../node_modules/gentelella/vendors/bootstrap/dist/js/bootstrap.min.js"></script>
+    <!-- FastClick -->
+    <script src="../../node_modules/gentelella/vendors/fastclick/lib/fastclick.js"></script>
+    <!-- NProgress -->
+    <script src="../../node_modules/gentelella/vendors/nprogress/nprogress.js"></script>
+
+    <!-- icheck -->
+    <script src="../../node_modules/gentelella/vendors/iCheck/icheck.min.js"></script>
+    <!-- Custom Theme Scripts -->
+    <script src="../../node_modules/gentelella/build/js/custom.min.js"></script>
+    <!-- jQuery Smart Wizard -->
+    <script src="../../node_modules/gentelella/vendors/jQuery-Smart-Wizard/js/jquery.smartWizard.js"></script>
+    <link href="../../node_modules/gentelella/vendors/jQuery-Smart-Wizard/styles/smart_wizard.css" >
+
+
+    <!-- Dropzone  -->
+    <script src="../../node_modules/gentelella/vendors/dropzone/dist/min/dropzone.min.js"></script>
+    <!-- Dropzone  -->
+    <link href="../../node_modules/gentelella/vendors/dropzone/dist/min/dropzone.min.css" rel="stylesheet">
+
+    <script src="../../node_modules/gentelella/production/js/moment/moment.min.js"></script>
+    <script src="../../node_modules/gentelella/production/js/datepicker/daterangepicker.js"></script>
+
+    <script type="text/javascript" src="/dygraphs/dygraph-combined-dev.js"></script>
+    <script type="text/javascript" src="/dygraphs/extras/synchronizer.js"></script>
+</head>
+<body class="nav-md">
+<div class="container body">
+    <div class="main_container">
+        <div class="col-md-3 left_col">
+            <div class="left_col scroll-view">
+                <div class="navbar nav_title" style="border: 0;">
+                    <a href="index.html" class="site_title"><i class="fa fa-paw"></i> <span>ExprOnline</span></a>
+                </div>
+
+                <div class="clearfix"></div>
+
+                <!-- menu profile quick info -->
+                <div class="profile">
+                    <div class="profile_pic">
+                        <img src="../../node_modules/gentelella/production/images/img.jpg" alt="..." class="img-circle profile_img">
+                    </div>
+                    <div class="profile_info">
+                        <span>Welcome,</span>
+                        <h2><%=locals.user.userName%></h2>
+                    </div>
+                </div>
+                <!-- /menu profile quick info -->
+                <br />
+                <%include sideBar.ejs%>
+            </div>
+        </div>
+        <%include topNavigation.ejs%>
+
+
+
+        <!-- page content -->
+        <div class="right_col" role="main">
+            <div class="">
+                <div class="page-title">
+                    <div class="title_left">
+                        <h3>Welcome, <%= locals.user.userName%></h3>
+                    </div>
+
+                </div>
+
+                <div class="clearfix"></div>
+                <div class="row">
+                    <div class="col-md-12 col-sm-12 col-xs-12">
+                        <div class="x_panel">
+                            <div class="x_title">
+                                <h2>Create New Homework</h2>
+                                <div class="clearfix"></div>
+                            </div>
+                            <div class="x_content">
+                                <div id="wizard" class="form-wizard wizard_horizontal">
+                                    <ul class="wizard_steps">
+                                        <li>
+                                            <a href="#step-1">
+                                                <span class="step_no">1</span>
+                                                <span class="step_descr">
+                                                    Step 1<br>
+                                                    <small>Basic Info</small>
+                                                </span>
+                                            </a>
+                                        </li>
+
+                                        <li>
+                                            <a href="#step-2">
+                                                <span class="step_no">2</span>
+                                                <span class="step_descr">
+                                                    Step 2<br>
+                                                    <small>Upload Files</small>
+                                                </span>
+                                            </a>
+
+                                        </li>
+                                        <li>
+                                            <a href="#step-3">
+                                                <span class="step_no">3</span>
+                                                <span class="step_descr">
+                                                    Step 3<br>
+                                                    <small>View Simulation Result</small>
+                                                </span>
+                                            </a>
+                                        </li>
+                                    </ul>
+
+                                    <div id = "step-1" >
+                                        <form class="form-horizontal form-label-left" id="homeworkBasicInfo">
+                                            <div class="form-group">
+                                                <label class="control-label col-md-3 col-sm-3 col-xs-12" for="homeworkName">Homework Name <span class="required">*</span>
+                                                </label>
+                                                <div class="col-md-6 col-sm-6 col-xs-12">
+                                                    <input type="text" name="homeworkName" required="required" class="form-control col-md-7 col-xs-12">
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+
+                                                <label class="control-label col-md-3 col-sm-3 col-xs-12" >Project Type</label>
+                                                <div class="col-sm-9">
+                                                <label class="radio-inline">
+                                                <input type="radio" name="homeworkType" id="drag" value="0" checked>
+                                                Drag and Drop
+                                                </label>
+
+                                                <label class="radio-inline">
+                                                <input type="radio" name="homeworkType" id="edit" value="1">
+                                                Code Editing
+                                                </label>
+                                                </div>
+                                            </div>
+
+                                            <div class="form-group">
+                                                <label class="control-label col-md-3 col-sm-3 col-xs-12">Top Entity Name <span class="required">*</span>
+                                                </label>
+                                                <div class="col-md-6 col-sm-6 col-xs-12">
+                                                    <input type="text" name="topEntityName" required="required" class="form-control col-md-7 col-xs-12">
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="control-label col-md-3 col-sm-3 col-xs-12">Simulate File Name <span class="required">*</span>
+                                                </label>
+                                                <div class="col-md-6 col-sm-6 col-xs-12">
+                                                    <input type="text" name="simulateFileName" required="required" class="form-control col-md-7 col-xs-12">
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="control-label col-md-3 col-sm-3 col-xs-12" for="inputPortName">
+                                                    Input Port Name
+                                                    <span class="required">*</span>
+                                                </label>
+                                                <div class="col-md-6 col-sm-6 col-xs-12">
+                                                    <input name="inputPortName" id = "inputPortName" type="text" class="tags form-control col-md-7 col-xs-12" required="required"/>
+                                                </div>
+                                            </div>
+
+                                            <div class="form-group">
+                                                <label class="control-label col-md-3 col-sm-3 col-xs-12" for="outputPortName">
+                                                    Output Port Name
+                                                    <span class="required">*</span>
+                                                </label>
+                                                <div class="col-md-6 col-sm-6 col-xs-12">
+                                                    <input name="outputPortName" id ="outputPortName" type="text" class="tags form-control col-md-7 col-xs-12" required="required"/>
+                                                </div>
+                                            </div>
+
+                                            <div class="form-group">
+                                                <label class="control-label col-md-3 col-sm-3 col-xs-12">Deadline <span class="required">*</span>
+                                                </label>
+                                                <div class="col-md-6 col-sm-6 col-xs-12">
+                                                    <input type="text" name="deadline" required="required" class="form-control col-md-7 col-xs-12">
+                                                    <span class="fa fa-calendar-o form-control-feedback right" aria-hidden="true"></span>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="control-label col-md-3 col-sm-3 col-xs-12">Describe <span class="required">*</span>
+                                                </label>
+                                                <div class="col-md-6 col-sm-6 col-xs-12">
+                                                    <textarea id="fakeInput" onchange="changeDescribe()" required="required" class="form-control col-md-7 col-xs-12" rows="7"></textarea>
+                                                    <input type="hidden" name="describe">
+                                                    <script>
+                                                        function changeDescribe() {
+                                                            $("input[name=describe]").val($('#fakeInput').val());
+                                                            console.log($("input[name=describe]").val());
+                                                            return true;
+                                                        }
+                                                    </script>
+                                                </div>
+                                            </div>
+
+
+                                        </form>
+
+                                    </div>
+
+                                    <div id="step-2">
+                                        <form action="/admin/uploadStandardFiles" class="dropzone" id="fileUpload"></form>
+                                    </div>
+
+                                    <div id="step-3">
+
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+
+            </div>
+        </div>
+        <!-- /page content -->
+
+        <!-- footer content -->
+        <footer>
+            <div class="pull-right">
+                Gentelella - Bootstrap Admin Template by <a href="https://colorlib.com">Colorlib</a>
+            </div>
+            <div class="clearfix"></div>
+        </footer>
+        <!-- /footer content -->
+    </div>
+</div>
+
+
+
+<script>
+
+
+    $(document).ready(function() {
+        $('#wizard').smartWizard({
+            onLeaveStep: ActionStepLeave,
+            onFinish: ActionFinish
+        });
+        finished = false;
+        $('.buttonNext').addClass('btn btn-success');
+        $('.buttonPrevious').addClass('btn btn-primary');
+        $('.buttonFinish').addClass('btn btn-default');
+        var inputs =  $('input');
+        inputs.change( function () {
+                resultGet = false;
+                finished = false;
+                console.log('input change');
+            });
+    });
+
+    var resultGet = false; // result can be either good or bad!!
+    var finished = false;
+
+    function ActionStepLeave(objs, context) {
+        if(context.fromStep == 1){
+            // send the form of the first page to the server
+            $.ajax({
+                type: "post",
+                url: "/admin/newHomeworkBasicInfo",
+                data: $('#homeworkBasicInfo').serialize(),
+                dataType: 'json',
+                success: function (data) {
+                    console.log(data);
+                },
+                error: function (err) {
+                    console.log(err);
+                    alert("Error when send basic info to the server");
+                }
+            });
+            return true;
+        }
+        else if(context.fromStep == 2 && context.toStep == 3 && resultGet == false){
+            $.ajax({
+                type: "post",
+                url: "/admin/homeworkSimulate",
+                data: {},
+                dataType: 'json',
+                success: function (data) {
+                    console.log(data);
+                    // you need to add the result to the next page
+                    if(data.status == 1){
+                        $('#step-3').html('<pre class="pre-scrollable"><samp>'+
+                                data.stdoutMsg + '\n======\n' + data.stderrMsg
+                                +'</samp></pre>');
+                    }
+                    else{
+                        $('#step-3').html('<div id="graphdiv"></div>');
+                        var newHw = data.newHw;
+
+
+
+
+
+    // var xtime = new Array();
+    var time = newHw.xtime.replace(/&#34;/g, "\"");
+    var xt = JSON.parse(time);
+    var totalTime = newHw.simulationTime;
+    console.log("time"+totalTime);
+    if(totalTime == 0)
+    {
+        xt.push(parseInt(xt[xt.length-1])+parseInt(xt[1]));
+    }
+    else
+    {
+        xt.push(totalTime);
+    }
+
+    console.log(newHw.changelist);
+    var change = (newHw.changelist).replace(/&#34;/g, "\"");
+
+    var changelist = JSON.parse(change);
+    console.log("change"+changelist);
+    var last = newHw.lastlist;
+    var lastlist = JSON.parse(last);
+    var signal = newHw.signalname.replace(/&#34;/g, "\"");
+    var signallist = JSON.parse(signal);
+    console.log("signal"+signallist);
+    var data = [];
+    for(i in signallist)
+    {
+
+        thiswave = function(x) {
+            if(x == 0)return changelist[0][i];
+            var k = 1;
+            while(k < xt.length)
+            {
+                if((xt[k-1] <= x) && (xt[k] > x) )
+                {
+                    return changelist[k-1][i];
+                }
+                else k = k + 1;
+            }
+
+        }
+        thisdata = [];
+        var k = 1;
+        for(var j = 0; j <= xt[xt.length-1]; j++)
+        {
+            if(changelist[0][i].length == 1)
+            {
+                var y = thiswave(j);
+                if(xt.length > 1 && k < changelist.length)
+                {
+                    if(j == xt[k])
+                    {
+                        if(changelist[k][i] != changelist[k-1][i])
+                        {
+                            var row = [j,1-y];
+                            thisdata.push(row);
+                        }
+                        k = k+1;
+                    }
+
+                }
+
+                var row = [j,y];
+                thisdata.push(row);
+            }
+            else
+            {
+                if(j == 0)
+                {
+                    row = [j,1];
+                    thisdata.push(row);
+                    continue;
+                }
+                if(xt.length > 1 && k < changelist.length)
+                {
+                    if(j == xt[k]) {
+                        if (changelist[k][i] != changelist[k - 1][i]) {
+                            row = [j, 1];
+                        }
+                        else {
+                            row = [j, 0];
+                        }
+                        thisdata.push(row);
+                        k = k + 1;
+                        continue;
+                    }
+                }
+                row = [j,0];
+                thisdata.push(row);
+            }
+
+
+        }
+        //alert(thisdata);
+        console.log(thisdata);
+        data.push(thisdata);
+    }
+    for(k in signallist)
+    {
+
+        var childdiv=document.createElement("div");
+        var id = "graph"+k;
+        childdiv.setAttribute('id',id);
+        //childdiv.setAttribute('style','float:right');
+        var labeldiv = document.createElement("div");
+        var labelid = "label"+k;
+        labeldiv.setAttribute('id',labelid);
+        //labeldiv.setAttribute('width','500px');
+        // labeldiv.setAttribute('style','float:right;width:500px');
+        var table = document.createElement("table");
+        var tr = document.createElement("tr");
+        table.appendChild(tr);
+        var td1 = document.createElement("td");
+        var td2 = document.createElement("td");
+        var td3 = document.createElement("td");
+        td3.setAttribute('valign','top');
+        tr.appendChild(td1);
+        tr.appendChild(td2);
+        tr.appendChild(td3);
+        td1.appendChild(childdiv);
+        td2.innerHTML = '&nbsp;&nbsp;';
+        td3.appendChild(labeldiv);
+        var parentdiv = document.getElementById("graphdiv");
+        parentdiv.appendChild(table);
+        //parentdiv.appendChild(labeldiv);
+    }
+
+    var color = ['blue','red','brown','green','purple','orange','rgb(37,10,152)','rgb(19,111,34)'];
+    var num = signallist.length;
+    var graph = new Array();
+    info = function(div,dataX){
+        var id = div;
+        var j;
+        for(k in xt)
+        {
+            if(k == 0)continue;
+            else if(dataX >= xt[k-1] && dataX < xt[k])
+            {
+                j = k-1 ;
+                break;
+            }
+        }
+        return changelist[j][id];
+    }
+    for(k in signallist)
+    {
+        id = "graph"+k;
+
+        if(k == num -1)
+        {
+            g = new Dygraph(
+
+                    // containing div
+
+                    document.getElementById(id),
+                    data[k],
+                    {
+                        labels: [xt,signallist[k]],//.concat(signallist),//.concat(signal),
+                        connectSeparatedPoints: true,
+                        drawPoints: false,
+                        drawYAxis: true,
+                        drawYGrid: false,
+                        showLabelsOnHighlight: false,
+                        height:80,
+                        width: 800,
+                        panEdgeFraction: 0.00000001,
+                        showRangeSelector:true,
+                        rangeSelectorHeight:30,
+                        showInRangeSelector:false,
+                        strokeWidth:1.2,
+                        ylabel:signallist[k],
+                        colors:[color[k%8]],
+                        //stepPlot:true,
+                        interactionModel:{},
+                        legend:"never",
+                        // labelsDiv:"label"+k,
+                        highlightCallback:function(e,x,pts,row){
+                            var labelDivName;
+                            for(k in signallist)
+                            {
+                                labelDivName = "label"+k;
+                                labelDiv = document.getElementById(labelDivName);
+                                var x = e.offsetX;
+                                //var y = e.offsetY;
+                                var dataX = g.toDataXCoord(x);
+                                dataX = Math.round(dataX);
+                                labelDiv.innerHTML = dataX+" "+signallist[k]+" "+info(k,dataX);
+
+
+                            }
+
+
+                        },
+                        axes: {
+                            x: {
+                                axisLabelFormatter: function (x) {
+                                    if (x < 0)return null;
+                                    return x;
+                                },
+
+                                valueRange: [0, 50000],
+
+                            },
+                            y: {
+                                //ticker:Dygraph.numericTicks(0, , pixels, nonLogscaleOpts, dygraph, vals),
+
+                                axisLabelFormatter: function (y) {
+                                    //if (y < 0)return null
+                                    //   if (y != 0 && y != 1.1)return signallist[k];
+                                    // if (y % 3 != 1 || y / 3 > signallist.length )return null;
+                                    // return signallist[k];
+                                    return null;
+
+                                },
+                                valueRange: [0, 1.2],
+                                pixelsPerLabel:9
+                            }
+                        }
+                    }
+            );
+        }
+        else
+        {
+            g = new Dygraph(
+
+                    // containing div
+
+                    document.getElementById(id),
+                    data[k],
+
+                    {
+                        labels: [xt,signallist[k]],//.concat(signallist),//.concat(signal),
+                        connectSeparatedPoints: true,
+                        drawPoints: false,
+                        drawYAxis: true,
+                        drawYGrid: false,
+                        showLabelsOnHighlight: false,
+                        height: 3*9,
+                        width: 800,
+                        panEdgeFraction: 0.00000001,
+                        ylabel:signallist[k],
+                        xAxisHeight:0.000001,
+                        xLabelHeight:0.00000000001,
+                        strokeWidth:1.2,
+                        colors:[color[k%8]],
+                        interactionModel:{},
+                        legend:"never",
+                        //stepPlot:true,
+                        //labelsDiv:"label"+k,
+                        highlightCallback:function(e,x,pts,row){
+                            var labelDivName;
+                            for(var k in signallist)
+                            {
+                                /*if(pts[0].name == signallist[k])
+                                 {
+                                 labelDivName = "label"+k;
+                                 }*/
+                                labelDivName = "label"+k;
+                                labelDiv = document.getElementById(labelDivName);
+                                var x = e.offsetX;
+                                //var y = e.offsetY;
+                                var dataX = g.toDataXCoord(x);
+                                dataX = parseInt(dataX);
+                                labelDiv.innerHTML = dataX+" "+signallist[k]+" "+info(k,dataX);
+
+
+                            }
+                        },
+
+                        axes: {
+                            x: {
+                                axisLabelFormatter: function (x) {
+                                    if (x < 0)return null;
+                                    return x;
+                                },
+                                axisLineWidth:0.00000001,
+                                valueRange: [0, 50000],
+                                axisLabelFontSize:0
+                            },
+                            y: {
+                                //ticker:Dygraph.numericTicks(0, , pixels, nonLogscaleOpts, dygraph, vals),
+                                axisLabelFormatter: function (y) {
+                                    return null;
+
+                                },
+                                valueRange: [0, 1.2],
+                                pixelsPerLabel:9
+                            }
+                        }
+                    }
+            );
+        }
+
+        graph.push(g);
+
+    }
+    var sync = Dygraph.synchronize(graph,{
+        selection:true,
+        zoom:true
+    });
+
+
+
+finished = true;
+
+                    }
+                    resultGet = true;
+                    $('#wizard').smartWizard('goForward');
+                },
+                error: function (err) {
+                    console.log(err);
+                    alert("Error when ask the server to simulate");
+                }
+
+            });
+
+            //should direct to the next page using javascript when everything has finished
+            return false;
+        }
+        return true;
+    }
+
+    function ActionFinish() {
+        if(!finished){
+            alert("Fix all bugs and get a valid simulation result first");
+            return false;
+        }
+        $.ajax({
+            type: "post",
+            url: "/admin/createHomeworkFinished",
+            data:{},
+            dataType: "json",
+            success: function (data) {
+                if(data.status != 0){
+                    alert(data.msg);
+                    return;
+                }
+                window.location.href='/admin';
+                //may be redirect
+            },
+            error: function (err) {
+                console.log(err);
+                alert("Error when create homework in server");
+
+            }
+        });
+    }
+
+
+    $("#inputPortName").tagsInput({
+//        'height':'auto',
+        'width':'100%',
+        'interactive':true,
+        'defaultText':'in port',
+//        'onAddTag':callback_function,
+//        'onRemoveTag':callback_function,
+//        'onChange' : callback_function,
+        'delimiter': [',',';', ' '],   // Or a string with a single delimiter. Ex: ';'
+        'removeWithBackspace' : true,
+        'minChars' : 0,
+        'maxChars' : 0, // if not provided there is no limit
+        'placeholderColor' : '#666666'
+    });
+    $("#outputPortName").tagsInput({
+//        'height':'auto',
+        'width':'100%',
+        'interactive':true,
+        'defaultText':'out port',
+//        'onAddTag':callback_function,
+//        'onRemoveTag':callback_function,
+//        'onChange' : callback_function,
+        'delimiter': [',',';', ' '],   // Or a string with a single delimiter. Ex: ';'
+        'removeWithBackspace' : true,
+        'minChars' : 0,
+        'maxChars' : 0, // if not provided there is no limit
+        'placeholderColor' : '#666666'
+    });
+    $(function() {
+        $('input[name="deadline"]').daterangepicker({
+                    singleDatePicker: true,
+                    showDropdowns: true
+                },
+                function(start, end, label) {
+
+                });
+    });
+
+    Dropzone.options.fileUpload = {
+        addRemoveLinks: true,
+        init: function () {
+
+            this.on('removedfile', function (file) {
+                resultGet = false;
+                finished = false;
+                $.ajax({
+                    type: 'post',
+                    url: '/admin/deleteHomeworkFile',
+                    data: {
+                        fileName: file.name
+                    },
+                    dataType: 'json',
+                    success: function (data) {
+                        console.log(data);
+                    },
+                    error: function (err) {
+                        alert('error when delete file on server');
+                        console.log(err);
+                    }
+                });
+            });
+            this.on('processing', function (file) {
+                resultGet = false;
+                console.log("fileAdder!");
+                finished = false;
+            });
+        }
+    };
+
+</script>
+</body>
+</html>

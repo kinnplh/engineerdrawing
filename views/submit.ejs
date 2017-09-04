@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel='stylesheet' href="/bower_components/bootstrap/dist/css/bootstrap.min.css" />
+    <script src="/bower_components/jquery/dist/jquery.min.js"></script>
+    <script src="/bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+    <title>Submit</title>
+    <!--<script src="/bower_components/bootstrap/js/modal.js"></script>-->
+</head>
+<body>
+<% include navbar.ejs %>
+<br>
+<br>
+<br>
+<div class="container">
+<%for(var i = 0; i < submitList.length; ++ i){
+    var currentSubmit = submitList[i];
+%>
+<div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+    <div class="panel panel-default">
+        <div class="panel-heading" role="tab" id="heading<%=currentSubmit._id%>">
+            <h4 class="panel-title">
+                <a data-toggle="collapse" data-parent="#accordion" href="#collapse<%=currentSubmit._id%>" aria-expanded="true" aria-controls="collapse<%=currentSubmit._id%>">
+                    <%= currentSubmit.time%></a>
+                    <%if(currentSubmit.state == 0){%>
+                        <span class="label label-info">Processing</span>
+                    <%} else if(currentSubmit.state == 1){%>
+                        <span class="label label-success">Success</span>
+                        <a class="label label-warning pull-right"  href="/download/kkk?submitIdForFile=<%=currentSubmit._id%>" role="button">Download All Files</a>
+                        <span class="label pull-right"> &nbsp; </span>
+                        <a class="label label-info pull-right" href="/download/kkk?submitId=<%=currentSubmit._id%>" role="button">Download Simulate Result</a>
+                        <span class="label pull-right"> &nbsp; </span>
+                        <a class="label label-info pull-right" href="/submit/detail?submitId=<%=currentSubmit._id%>" role="button">View details</a>
+                    <%} else {%>
+                        <span class="label label-danger">Error</span>
+                        <a class="label label-warning pull-right"  href="/download/kkk?submitIdForFile=<%=currentSubmit._id%>" role="button">Download All Files</a>
+                    <%}%>
+            </h4>
+        </div>
+        <div id="collapse<%=currentSubmit._id%>" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading<%=currentSubmit._id%>">
+            <div class="panel-body">
+                <pre>
+                <%if(currentSubmit.state == 0){%>
+                    Message Not Available!
+                <%} else if(currentSubmit.state == 1){%>
+                    <br>Stdout: <%=currentSubmit.stdMsg%>
+                <%} else{%>
+                    <br>Stdout: <%=currentSubmit.stdMsg%>
+                    <hr>
+                    <br>Stderr: <%=currentSubmit.errMsg%>
+                <%}%>
+                </pre>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<%}%>
+
+</div>
+
+
+
+
+</body>
+</html>

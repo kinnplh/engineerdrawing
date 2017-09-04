@@ -1,0 +1,1 @@
+If this file appears in the target folder, the upload file function should work well.

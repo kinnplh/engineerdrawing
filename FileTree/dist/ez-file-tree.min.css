@@ -1,0 +1,71 @@
+.ez-file-tree ul {
+  list-style: none;
+  padding: 0 0 0 18px;
+  margin: 0;
+}
+.ez-file-tree i {
+  margin: 0;
+}
+.ez-file-tree .icon-container {
+  width: 14px;
+  text-align: center;
+  display: inline-block;
+}
+.ez-file-tree input[type="checkbox"] {
+  cursor: pointer;
+  position: relative;
+  vertical-align: middle;
+  margin: 0;
+  height: 14px;
+}
+.ez-file-tree li {
+  text-align: left;
+  cursor: pointer;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+}
+.ez-file-tree .folder-toggle {
+  width: 14px;
+  display: inline-block;
+}
+.ez-file-tree .folder-toggle i:hover {
+  color: #ccc;
+}
+.ez-file-tree .file-name {
+  display: inline-block;
+  vertical-align: middle;
+}
+.ez-file-tree label {
+  cursor: pointer;
+  font-weight: normal;
+  min-width: 120px;
+}
+.ez-file-tree label.unselectable {
+  cursor: default;
+  color: #999;
+}
+.ez-file-tree label.unselectable i {
+  cursor: default;
+}
+.ez-file-tree:not(.checking-enabled) label {
+  padding: 0 5px;
+}
+.ez-file-tree:not(.checking-enabled) .label-container.selected label {
+  background-color: #006dcc;
+  color: #fff;
+}
+.ez-file-tree .file-tree-animate.ng-enter {
+  -webkit-transition: opacity 1s ease 0.1s;
+  -moz-transition: opacity 1s ease 0.1s;
+  -o-transition: opacity 1s ease 0.1s;
+  transition: opacity 1s ease 0.1s;
+}
+.ez-file-tree .file-tree-animate.ng-enter,
+.ez-file-tree .file-tree-animate.ng-leave.ng-leave-active {
+  opacity: 0;
+}
+.ez-file-tree .file-tree-animate.ng-leave,
+.ez-file-tree .file-tree-animate.ng-enter.ng-enter-active {
+  opacity: 1;
+}

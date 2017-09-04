@@ -1,0 +1,258 @@
+.hhEditor_helper_grad1 {
+  background: #444444;
+  background: -moz-linear-gradient(top, #444444 0%, #3d3d3d 100%);
+  background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #444444), color-stop(100%, #3d3d3d));
+  background: -webkit-linear-gradient(top, #444444 0%, #3d3d3d 100%);
+  background: -o-linear-gradient(top, #444444 0%, #3d3d3d 100%);
+  background: -ms-linear-gradient(top, #444444 0%, #3d3d3d 100%);
+  background: linear-gradient(to bottom, #444444 0%, #3d3d3d 100%);
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#444444', endColorstr='#3d3d3d', GradientType=0);
+}
+.hhEditor_helper_grad2 {
+  background: #555555;
+  background: -moz-linear-gradient(top, #555555 0%, #424242 100%);
+  background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #555555), color-stop(100%, #424242));
+  background: -webkit-linear-gradient(top, #555555 0%, #424242 100%);
+  background: -o-linear-gradient(top, #555555 0%, #424242 100%);
+  background: -ms-linear-gradient(top, #555555 0%, #424242 100%);
+  background: linear-gradient(to bottom, #555555 0%, #424242 100%);
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#555555', endColorstr='#424242', GradientType=0);
+}
+.hhEditor_helper_grad3 {
+  background: #2b2b2b;
+  background: -moz-linear-gradient(top, #2b2b2b 0%, #353535 100%);
+  background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #2b2b2b), color-stop(100%, #353535));
+  background: -webkit-linear-gradient(top, #2b2b2b 0%, #353535 100%);
+  background: -o-linear-gradient(top, #2b2b2b 0%, #353535 100%);
+  background: -ms-linear-gradient(top, #2b2b2b 0%, #353535 100%);
+  background: linear-gradient(to bottom, #2b2b2b 0%, #353535 100%);
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#2b2b2b', endColorstr='#353535', GradientType=0);
+}
+.hhEditor {
+  background: #2b2b2b;
+  background: -moz-linear-gradient(top, #2b2b2b 0%, #353535 100%);
+  background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #2b2b2b), color-stop(100%, #353535));
+  background: -webkit-linear-gradient(top, #2b2b2b 0%, #353535 100%);
+  background: -o-linear-gradient(top, #2b2b2b 0%, #353535 100%);
+  background: -ms-linear-gradient(top, #2b2b2b 0%, #353535 100%);
+  background: linear-gradient(to bottom, #2b2b2b 0%, #353535 100%);
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#2b2b2b', endColorstr='#353535', GradientType=0);
+  width: 100%;
+  height: 100%;
+  display: table;
+}
+.hhEditor .tabs {
+  background: #2b2b2b;
+  background: -moz-linear-gradient(top, #2b2b2b 0%, #353535 100%);
+  background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #2b2b2b), color-stop(100%, #353535));
+  background: -webkit-linear-gradient(top, #2b2b2b 0%, #353535 100%);
+  background: -o-linear-gradient(top, #2b2b2b 0%, #353535 100%);
+  background: -ms-linear-gradient(top, #2b2b2b 0%, #353535 100%);
+  background: linear-gradient(to bottom, #2b2b2b 0%, #353535 100%);
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#2b2b2b', endColorstr='#353535', GradientType=0);
+  height: 34px;
+  width: 100%;
+  display: table-row;
+}
+.hhEditor .tabs .rowTabs {
+  display: flex;
+  display: -webkit-flex;
+  display: -ms-flex;
+  -webkit-flex-direction: row;
+  -ms-flex-direction: row;
+  flex-direction: row;
+  border-bottom: solid 5px #424242;
+}
+.hhEditor .tabs .rowTabs .as-sortable-item-handle {
+  cursor: default !important;
+}
+.hhEditor .tabs .rowTabs .tab {
+  position: relative;
+  min-width: 10px;
+  max-width: 121px;
+  flex: 1 1 auto;
+  width: 0;
+  overflow: hidden;
+  height: 30px;
+  line-height: 30px;
+  background: #444444;
+  background: -moz-linear-gradient(top, #444444 0%, #3d3d3d 100%);
+  background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #444444), color-stop(100%, #3d3d3d));
+  background: -webkit-linear-gradient(top, #444444 0%, #3d3d3d 100%);
+  background: -o-linear-gradient(top, #444444 0%, #3d3d3d 100%);
+  background: -ms-linear-gradient(top, #444444 0%, #3d3d3d 100%);
+  background: linear-gradient(to bottom, #444444 0%, #3d3d3d 100%);
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#444444', endColorstr='#3d3d3d', GradientType=0);
+  padding: 0px 8px;
+  color: #a3a3a3;
+  font-size: 12px;
+  border-left: solid 1px #2e2e2e;
+  border-right: solid 1px #4b4b4b;
+  border-bottom: solid 1px #2e2e2e;
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+.hhEditor .tabs .rowTabs .tab .tabTitle {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-size: 12px;
+  margin-right: 10px;
+  text-shadow: 0 1px rgba(0, 0, 0, 0.4);
+}
+.hhEditor .tabs .rowTabs .tab .tabTitleRename {
+  overflow: hidden;
+  display: inline-block;
+  margin-right: 10px;
+  font-size: 12px;
+  color: white;
+  text-shadow: 0 1px rgba(0, 0, 0, 0.4);
+  outline: none;
+  border: none;
+  background-color: transparent;
+}
+.hhEditor .tabs .rowTabs .tab .tabClose {
+  right: 5px;
+  margin-top: 8px;
+  position: absolute;
+  width: 15px;
+  height: 15px;
+  line-height: 15px;
+  overflow: hidden;
+  top: 0px;
+  border-radius: 15px;
+  text-align: center;
+  color: #666;
+  font-weight: bold;
+  cursor: default !important;
+}
+.hhEditor .tabs .rowTabs .tab .tabClose:hover {
+  background-color: #666;
+  color: white;
+}
+.hhEditor .tabs .rowTabs .tab:first-child {
+  border-left: none;
+}
+.hhEditor .tabs .rowTabs .tabActive {
+  background: #555555;
+  background: -moz-linear-gradient(top, #555555 0%, #424242 100%);
+  background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #555555), color-stop(100%, #424242));
+  background: -webkit-linear-gradient(top, #555555 0%, #424242 100%);
+  background: -o-linear-gradient(top, #555555 0%, #424242 100%);
+  background: -ms-linear-gradient(top, #555555 0%, #424242 100%);
+  background: linear-gradient(to bottom, #555555 0%, #424242 100%);
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#555555', endColorstr='#424242', GradientType=0);
+  color: white;
+  border-bottom: none;
+  height: 31px;
+  line-height: 30px;
+  min-width: 100px;
+}
+.hhEditor .tabs .addNew {
+  color: white;
+  margin: 0px !important;
+  padding: 0px !important;
+  padding-right: 2px !important;
+  padding-top: 2px !important;
+  height: 28px !important;
+  line-height: 28px !important;
+  cursor: pointer;
+  opacity: 0.4;
+  font-size: 18px !important;
+  font-weight: bold !important;
+  text-align: center;
+  max-width: 30px !important;
+  min-width: 30px !important;
+  padding: 0px;
+  background: none !important;
+  border-right: none !important;
+  text-shadow: 0 1px rgba(0, 0, 0, 0.4);
+}
+.hhEditor .tabs .addNew:hover {
+  opacity: 1;
+}
+.hhEditor .tabsContents {
+  width: 100%;
+  height: 100%;
+  display: table-row;
+}
+.hhEditor .tabContent {
+  height: 100%;
+  width: 100%;
+  display: none;
+}
+.hhEditor .tabContent .editor {
+  height: 100%;
+  width: 100%;
+  display: table-row;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+}
+.hhEditor .tabContent .aceEditor {
+  height: 100%;
+}
+.hhEditor .tabContent .editorStatus {
+  background: #2b2b2b;
+  background: -moz-linear-gradient(top, #2b2b2b 0%, #353535 100%);
+  background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #2b2b2b), color-stop(100%, #353535));
+  background: -webkit-linear-gradient(top, #2b2b2b 0%, #353535 100%);
+  background: -o-linear-gradient(top, #2b2b2b 0%, #353535 100%);
+  background: -ms-linear-gradient(top, #2b2b2b 0%, #353535 100%);
+  background: linear-gradient(to bottom, #2b2b2b 0%, #353535 100%);
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#2b2b2b', endColorstr='#353535', GradientType=0);
+  line-height: 25px;
+  height: 25px;
+  width: 100%;
+  font-size: 11px;
+  color: #7c7c7c;
+  display: table-row;
+  text-shadow: 0 1px rgba(0, 0, 0, 0.4);
+}
+.hhEditor .tabContent .editorStatus a {
+  color: #CCC;
+}
+.hhEditor .tabContent .editorStatus .editorStatusContent {
+  border-top: solid 1px #242424;
+}
+.hhEditor .tabContent .editorStatus .editorStatusContent .download {
+  margin-left: 10px;
+  text-decoration: none;
+}
+.hhEditor .tabContent .editorStatus .editorStatusContent .cursor {
+  display: inline-block;
+  margin-left: 10px;
+  color: #7c7c7c;
+}
+.hhEditor .tabContent .editorStatus .editorStatusContent .syntax {
+  display: inline-block;
+  float: right;
+}
+.hhEditor .tabContent .editorStatus .editorStatusContent .syntax select {
+  text-align: right;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  padding: 2px 30px 2px 2px;
+  border: none;
+  background: transparent;
+  color: #CCC;
+  outline: 0;
+}
+.hhEditor .tabContent .editorStatus .editorStatusContent .syntax select option {
+  text-align: right;
+}
+.hhEditor .tabContent.active {
+  display: table;
+}
+.hhEditor .firepad-container {
+  width: 100%;
+  height: 100px;
+}
+.hhEditor .powered-by-firepad {
+  display: none;
+}

@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Submit Detail</title>
+    <link rel='stylesheet' href="/bower_components/bootstrap/dist/css/bootstrap.min.css" />
+    <script src="/bower_components/jquery/dist/jquery.min.js"></script>
+    <script src="/bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+</head>
+    <body>
+    <% include navbar.ejs %>
+    <br>
+    <br>
+    <br>
+    <div class="container row">
+        <div class="col-md-12">
+            <div id="graphdiv" width="1500px"></div>
+        </div>
+        <div class="col-md-12">
+            <div id="simulateMsg">
+                <pre class="pre-scrollable"><samp><%=simulatem%></samp></pre>
+            </div>
+        </div>
+    </div>
+
+
+    <script type="text/javascript" src="/dygraphs/dygraph-combined-dev.js"></script>
+    <script type="text/javascript" src="/dygraphs/extras/synchronizer.js"></script>
+    <script type="text/javascript">
+        // var xtime = new Array();
+        var time = "<%=xtime%>".replace(/&#34;/g, "\"");
+        var xt = JSON.parse(time);
+        var totalTime = "<%=locals.simulationTime%>";
+        if(totalTime == 0)
+        {
+            xt.push(parseInt(xt[xt.length-1])+parseInt(xt[1]));
+        }
+        else
+        {
+            xt.push(totalTime);
+        }
+
+
+        var change = "<%=changelist%>".replace(/&#34;/g, "\"");
+        console.log("change: " + change);
+        var changelist = JSON.parse(change);
+
+        var last = "<%=lastlist%>";
+        var lastlist = JSON.parse(last);
+        var signal = "<%=signalname%>".replace(/&#34;/g, "\"");
+        var signallist = JSON.parse(signal);
+        var data = [];
+        for(i in signallist)
+        {
+
+            thiswave = function(x) {
+                if(x == 0)return changelist[0][i];
+                var k = 1;
+                while(k < xt.length)
+                {
+                    if((xt[k-1] <= x) && (xt[k] > x) )
+                    {
+                        return changelist[k-1][i];
+                    }
+                    else k = k + 1;
+                }
+
+            }
+            thisdata = [];
+            var k = 1;
+            for(var j = 0; j <= xt[xt.length-1]; j++)
+            {
+                if(changelist[0][i].length == 1)
+                {
+                    var y = thiswave(j);
+                    if(xt.length > 1 && k < changelist.length)
+                    {
+                        if(j == xt[k])
+                        {
+                            if(changelist[k][i] != changelist[k-1][i])
+                            {
+                                var row = [j,1-y];
+                                thisdata.push(row);
+                            }
+                            k = k+1;
+                        }
+
+                    }
+
+                    var row = [j,y];
+                    thisdata.push(row);
+                }
+                else
+                {
+                    if(j == 0)
+                    {
+                        row = [j,1];
+                        thisdata.push(row);
+                        continue;
+                    }
+                    if(xt.length > 1 && k < changelist.length)
+                    {
+                        if(j == xt[k]) {
+                            if (changelist[k][i] != changelist[k - 1][i]) {
+                                row = [j, 1];
+                            }
+                            else {
+                                row = [j, 0];
+                            }
+                            thisdata.push(row);
+                            k = k + 1;
+                            continue;
+                        }
+                    }
+                    row = [j,0];
+                    thisdata.push(row);
+                }
+
+
+
+
+
+                //var y = thiswave(j);
+
+                //var y = 0;//thiswave(j);
+                //var row = [j,y];
+                //thisdata.push(row);
+
+            }
+            //alert(thisdata);
+            console.log(thisdata);
+            data.push(thisdata);
+        }
+        for(k in signallist)
+        {
+
+            var childdiv=document.createElement("div");
+            var id = "graph"+k;
+            childdiv.setAttribute('id',id);
+            //childdiv.setAttribute('style','float:right');
+            var labeldiv = document.createElement("div");
+            var labelid = "label"+k;
+            labeldiv.setAttribute('id',labelid);
+            //labeldiv.setAttribute('width','500px');
+           // labeldiv.setAttribute('style','float:right;width:500px');
+            var table = document.createElement("table");
+            var tr = document.createElement("tr");
+            table.appendChild(tr);
+            var td1 = document.createElement("td");
+            var td2 = document.createElement("td");
+            var td3 = document.createElement("td");
+            td3.setAttribute('valign','top');
+            tr.appendChild(td1);
+            tr.appendChild(td2);
+            tr.appendChild(td3);
+            td1.appendChild(childdiv);
+            td2.innerHTML = '&nbsp;&nbsp;';
+            td3.appendChild(labeldiv);
+            var parentdiv = document.getElementById("graphdiv");
+            parentdiv.appendChild(table);
+            //parentdiv.appendChild(labeldiv);
+        }
+
+        var color = ['blue','red','brown','green','purple','orange','rgb(37,10,152)','rgb(19,111,34)'];
+        var num = signallist.length;
+        var graph = new Array();
+        info = function(div,dataX){
+            var id = div;
+            var j;
+            for(k in xt)
+            {
+                if(k == 0)continue;
+                else if(dataX >= xt[k-1] && dataX < xt[k])
+                {
+                    j = k-1 ;
+                    break;
+                }
+            }
+            return changelist[j][id];
+        }
+        for(k in signallist)
+        {
+            id = "graph"+k;
+
+            if(k == num -1)
+            {
+                g = new Dygraph(
+
+                        // containing div
+
+                        document.getElementById(id),
+                        data[k],
+                        {
+                            labels: [xt,signallist[k]],//.concat(signallist),//.concat(signal),
+                            connectSeparatedPoints: true,
+                            drawPoints: false,
+                            drawYAxis: true,
+                            drawYGrid: false,
+                            showLabelsOnHighlight: false,
+                            height:80,
+                            width: 900,
+                            panEdgeFraction: 0.00000001,
+                            showRangeSelector:true,
+                            rangeSelectorHeight:30,
+                            showInRangeSelector:false,
+                            strokeWidth:1.2,
+                            ylabel:signallist[k],
+                            colors:[color[k%8]],
+                            //stepPlot:true,
+                            interactionModel:{},
+                            legend:"never",
+                           // labelsDiv:"label"+k,
+                            highlightCallback:function(e,x,pts,row){
+                                var labelDivName;
+                                for(k in signallist)
+                                {
+                                    labelDivName = "label"+k;
+                                    labelDiv = document.getElementById(labelDivName);
+                                    var x = e.offsetX;
+                                    //var y = e.offsetY;
+                                    var dataX = g.toDataXCoord(x);
+                                    dataX = Math.round(dataX);
+                                    labelDiv.innerHTML = dataX+" "+signallist[k]+" "+info(k,dataX);
+
+
+                                }
+
+
+                            },
+                            axes: {
+                                x: {
+                                    axisLabelFormatter: function (x) {
+                                        if (x < 0)return null;
+                                        return x;
+                                    },
+
+                                    valueRange: [0, 50000],
+
+                                },
+                                y: {
+                                    //ticker:Dygraph.numericTicks(0, , pixels, nonLogscaleOpts, dygraph, vals),
+
+                                    axisLabelFormatter: function (y) {
+                                        //if (y < 0)return null
+                                        //   if (y != 0 && y != 1.1)return signallist[k];
+                                        // if (y % 3 != 1 || y / 3 > signallist.length )return null;
+                                        // return signallist[k];
+                                        return null;
+
+                                    },
+                                    valueRange: [0, 1.2],
+                                    pixelsPerLabel:9
+                                }
+                            }
+                        }
+                );
+            }
+            else
+            {
+                g = new Dygraph(
+
+                        // containing div
+
+                        document.getElementById(id),
+                        data[k],
+
+                        {
+                            labels: [xt,signallist[k]],//.concat(signallist),//.concat(signal),
+                            connectSeparatedPoints: true,
+                            drawPoints: false,
+                            drawYAxis: true,
+                            drawYGrid: false,
+                            showLabelsOnHighlight: false,
+                            height: 3*9,
+                            width: 900,
+                            panEdgeFraction: 0.00000001,
+                            ylabel:signallist[k],
+                            xAxisHeight:0.000001,
+                            xLabelHeight:0.00000000001,
+                            strokeWidth:1.2,
+                            colors:[color[k%8]],
+                            interactionModel:{},
+                            legend:"never",
+                            //stepPlot:true,
+                            //labelsDiv:"label"+k,
+                            highlightCallback:function(e,x,pts,row){
+                                var labelDivName;
+                                for(var k in signallist)
+                                {
+                                    /*if(pts[0].name == signallist[k])
+                                     {
+                                     labelDivName = "label"+k;
+                                     }*/
+                                    labelDivName = "label"+k;
+                                    labelDiv = document.getElementById(labelDivName);
+                                    var x = e.offsetX;
+                                    //var y = e.offsetY;
+                                    var dataX = g.toDataXCoord(x);
+                                    dataX = parseInt(dataX);
+                                    labelDiv.innerHTML = dataX+" "+signallist[k]+" "+info(k,dataX);
+
+
+                                }
+                            },
+
+                            axes: {
+                                x: {
+                                    axisLabelFormatter: function (x) {
+                                        if (x < 0)return null;
+                                        return x;
+                                    },
+                                    axisLineWidth:0.00000001,
+                                    valueRange: [0, 50000],
+                                    axisLabelFontSize:0
+                                },
+                                y: {
+                                    //ticker:Dygraph.numericTicks(0, , pixels, nonLogscaleOpts, dygraph, vals),
+                                    axisLabelFormatter: function (y) {
+                                        return null;
+
+                                    },
+                                    valueRange: [0, 1.2],
+                                    pixelsPerLabel:9
+                                }
+                            }
+                        }
+                );
+            }
+
+            graph.push(g);
+
+        }
+        var sync = Dygraph.synchronize(graph,{
+            selection:true,
+            zoom:true
+        });
+
+    </script>
+
+
+    </body>
+</html>

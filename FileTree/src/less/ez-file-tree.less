@@ -1,0 +1,93 @@
+.ez-file-tree {
+  ul {
+    list-style: none;
+    padding: 0 0 0 18px;
+    margin: 0;
+  }
+
+  i {
+    margin: 0;
+  }
+
+  .icon-container {
+    width: 14px;
+    text-align: center;
+    display: inline-block;
+  }
+  
+  input[type="checkbox"] {
+    cursor: pointer;
+    position: relative;
+    vertical-align: middle;
+    margin: 0;
+    height: 14px;
+  }
+
+  li {
+    text-align: left;
+    cursor: pointer;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+  }
+
+  .folder-toggle { 
+    width: 14px; 
+    display: inline-block; 
+    i {
+      &:hover {
+        color: #ccc;
+      }
+    }
+  }
+
+  .file-name { 
+    display: inline-block;
+    vertical-align: middle;
+  }
+
+  label {
+    cursor: pointer;
+    font-weight: normal;
+    min-width: 120px;
+
+    &.unselectable {
+      cursor: default;
+      color: #999;
+
+      i {
+        cursor: default;
+      }
+    }
+  }
+
+  &:not(.checking-enabled) {
+    label {
+      padding: 0 5px;
+    }
+
+   .label-container.selected {
+      label {
+        background-color: #006dcc;
+        color: #fff;
+      }
+    }
+  }
+
+  .file-tree-animate.ng-enter {
+    -webkit-transition: opacity 1s ease 0.1s;
+    -moz-transition: opacity 1s ease 0.1s;
+    -o-transition: opacity 1s ease 0.1s;
+    transition: opacity 1s ease 0.1s;
+  }
+
+  .file-tree-animate.ng-enter,
+  .file-tree-animate.ng-leave.ng-leave-active {
+    opacity: 0;
+  }
+
+  .file-tree-animate.ng-leave,
+  .file-tree-animate.ng-enter.ng-enter-active {
+    opacity: 1;
+  }
+}

@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="stylesheet" href="/jqcool.net-jquery-fullpage/css/jquery.fullPage.css">
+
+    <link rel="stylesheet" href="/login/css/style.css" media="screen" type="text/css" />
+    <style>
+
+
+        /* 右侧导航 */
+        #fullPage-nav { _display: none; font-size: 12px;}
+        #fullPage-nav li { width: 90px; height: 21px; margin: 10px 0 0; vertical-align: middle;}
+        #fullPage-nav li a { float: right; width: 21px; height: 21px; color: #8F9DA4; text-decoration: none; text-align: right; background: url(images/dot.png) 5px 5px no-repeat;}
+        #fullPage-nav li .active { background-position: 0 bottom;}
+        #fullPage-nav span { display: none;}
+        .fullPage-tooltip { float: left; top: 0; margin-right: 5px; font: 12px "Microsoft Yahei"; color: #8F9DA4; line-height: 21px;}
+
+        .section { position: relative; overflow: hidden;}
+        .section .bg { position: absolute; left: 0; top: 0; width: 100%; height: 100%;}
+        .section .bg img { display: block; width: 100%; height: 100%;}
+
+        .bg11 { position: absolute; bottom: 0; width: 100%; height: 100%; background: url(images/bg11.png) 0 0 no-repeat; transition: all 1s;}
+        .bg12 { position: absolute; bottom: 0; width: 100%; height: 100%; background: url(images/bg12.png) 0 0 no-repeat; opacity: 0; transition: all 1.7s;bottom: 90px\0; }
+        .bg13 { position: absolute; bottom: 0; width: 100%; height: 100%; background: url(images/bg13.png) 0 0 no-repeat; transition: all 1s;}
+        .hgroup { position: absolute; width: 554px; height: 176px; left: 50%; top: 25%; margin: 0 0 0 -277px;font-size:30px;opacity: 0; -webkit-transform:scale(0.5, 0.5); transform:scale(0.5, 0.5); transition: all 1s;}
+        .p11 { position: absolute; left: 75%; top: 15%; width: 600px; margin: 0 0 0 -280px; font-size: 14px; color: #94a7c6; opacity: 0; transition: all 0.5s;}
+        .mail { position: absolute; left: 50%; top: -26px; width: 375px; height: 26px; margin-left: -187px; background-image: url(images/logo.png); transition: all 1s;}
+        .mail { float: left; height: 26px; text-indent: -9999px;}
+        .mail-163 { float: left; width: 107px;}
+        .mail-126 { float: left;width: 108px; margin-left: 23px;}
+        .mail-yeah { float: right; width: 115px;}
+
+        .bg21 { position: absolute; left: 50%; bottom: 15%; width: 819px; height: 250px; margin-left: -608px; margin-bottom: 40px; background: url(images/bg21.png) 0 0 no-repeat; transition: all 1s;  opacity: 0; margin-left: -1108px;}
+        .bg22 { position: absolute; left: 50%; bottom: 15%; width: 819px; height: 299px; margin-left: -280px; margin-bottom: 70px; background: url(images/bg22.png) right 0 no-repeat; transition: all 1s; opacity: 0; margin-left: 320px;}
+        .bg23 { position: absolute; left: 50%; bottom: 15%; width: 819px; height: 325px; margin-left: -409px; background: url(images/bg23.png) 50% 0 no-repeat; transition: all 1s;  bottom: -40%;}
+        .section strong { position: absolute; left: 50%; top: 15%; z-index: 10; width: 512px; height: 45px; margin-left: -256px; font-size: 24px; font-weight: 500; color: #748A9E; opacity: 0; -webkit-transform:scale(0.5, 0.5); transform:scale(0.5, 0.5); transition: all 1s;}
+        .section h3 { position: absolute; left: 50%; top: 15%; z-index: 10; width: 512px; height: 45px; margin-left: -256px; margin-top: 60px; text-indent: -9999px; background-repeat: no-repeat; opacity: 0; -webkit-transform:scale(0.5, 0.5); transform:scale(0.5, 0.5); transition: all 1s;}
+        .p1 { position: absolute; left: 50%; top: 15%; width: 510px; margin-left: -255px; margin-top: 130px; font-size: 16px; color: #727F8C; opacity: 0; transition: all 1s;}
+
+        .section2 h3 { background-image: url(images/t2.png);}
+        .section7 strong { width: 561px; margin-left: -280px;}
+        .section6 strong { width: 561px; margin-left: -280px;}
+        .section6 h3 { width: 561px; margin-left: -280px;}
+        .section8 strong { width: 561px; margin-left: -280px;}
+        .section8 h3 { width: 561px; margin-left: -280px; background-image: url(images/t8.png);}
+        .section9 strong { width: 609px; margin-left: -304px;}
+        .section9 h3 { width: 609px; margin-left: -304px; background-image: url(images/t9.png);}
+        .section9 h3 span { position: absolute; left: -100px; top: -48px; width: 89px; height: 90px; background-image: url(images/yixin.png);}
+
+        .bg31 { position: absolute; left: 250px; top: 100px; width: 892px; height: 472px;  background-image: url(images/bg31.png); opacity: 0; transition: all 1s;}
+        .bg32 { position: absolute; left: 50%; bottom: 0; width: 892px; height: 472px; margin-left: -396px; background: url(images/bg32.png) 470px bottom no-repeat; opacity: 0; transition: all 1s;}
+        .bg33 { position: absolute; left: 783px; top: 120px; width: 441px; height: 380px; background: url(images/bg33.png) 0 0 no-repeat; opacity: 0; transition: all 1s;}
+        .p3 { position: absolute; width: 430px; left: 50%; top: 15%; margin-top: 250px; margin-left: -100%; font-size: 16px; color: #FFFDE1; opacity: 0; transition: all 1s;}
+
+        .bg41 { position: absolute; left:15%; bottom: 20%; width: 892px; height: 472px; background: url(images/bg41.png) 50% 0 no-repeat; transition: all 1s;}
+        .bg43 { position: absolute; bottom: -449px; width: 100%; height: 449px; margin-bottom: -130px; background: url(images/bg43.png) 50% 0 no-repeat; transition: all 1s;}
+
+
+        .section5 h4 { margin-bottom: 12px; font-size: 23px; font-weight: 500;}
+        .section5 p { font-size: 14px;}
+        .bg51 { position: absolute; left: 200px; top: 80px; width: 892px; height: 472px;  background-image: url(images/bg51.png); opacity: 0; transition: all 1s;}
+        .bg53 { position: absolute; left: 783px; top: 90px; width: 441px; height: 380px; background: url(images/bg53.png) 0 0 no-repeat; opacity: 0; transition: all 1s;}
+        .p5 { position: absolute; width: 430px; left: 50%; top: 15%; margin-top: 250px; margin-left: -100%; font-size: 16px; color: #FFFDE1; opacity: 0; transition: all 1s;}
+
+        .bg71 { position: absolute; top: -454px; width: 100%; height: 545px; background: url(images/bg71.png) 50% 0 no-repeat; transition: all 1s;}
+        .bg72 { position: absolute; left: 6%; bottom: 20%; width: 597px; height: 284px; margin-left: -507px; background-image: url(images/bg72.png); transition: all 1s;}
+        .txt7 { position: absolute; left: 93%; bottom: 20%; width: 447px; margin-left: 90px; opacity: 0; transition: all 1s;}
+        .txt7 p { margin-bottom: 17px; color: #5C7970;}
+
+        .bg61 { position: absolute; left: 15%; bottom: -10%; width: 597px; height: 284px; background: url(images/bg61.png) 50% 0 no-repeat; opacity: 0; transition: all 1s;}
+        .txt6 { position: absolute; left: 50%; bottom: -150px; width: 420px; margin-left: 100px; opacity: 0; transition: all 1s;}
+        .txt6 p { margin-bottom: 17px; color: #EAEFF2;}
+
+        .bg81 { position: absolute; width: 100%; bottom: 100px; height: 215px; background: url(images/bg81.png) 50% 0 no-repeat;}
+        .bg82 { position: absolute; left: 50%; bottom: 160px; width: 164px; height: 117px; margin-left: -180px; background-image: url(images/bg82.png); opacity: 0; transition: all 1s;}
+        .bg83 { position: absolute; left: 50%; bottom: 280px; width: 70px; height: 29px; margin-left: -330px; background-image: url(images/bg83.png); opacity: 0; transition: all 1s;}
+        .bg84 { position: absolute; left: 50%; bottom: 320px; width: 43px; height: 26px; margin-left: -410px; background-image: url(images/bg84.png); opacity: 0; transition: all 1s;}
+        .p8 { position: absolute; left: 50%; top: 15%; width: 565px; margin-left: -282px; margin-top: 130px; font-size: 16px; color: #727F8C; opacity: 0; transition: all 1s;}
+
+        .bg91, .bg92, .bg93 { padding-top: 350px; font-size: 16px; color: #fff;}
+        .bg91 { position: absolute; left: 50%; bottom: 15%; width: 340px; margin-left: -970px; background: url(images/bg91.png) 0 0 no-repeat; opacity: 0; transition: all 1s;}
+        .bg91 p { position: relative; left: 20px; margin-left: 40px; border-right: 1px solid #13AB86;}
+        .bg92 { position: absolute; left: 50%; bottom: 15%; width: 340px; margin-left: -180px; background: url(images/bg92.png) 50% 0 no-repeat; opacity: 0; transition: all 1s;}
+        .bg92 p { position: relative; left: 40px; margin-left: 30px;}
+        .bg93 { position: absolute; left: 50%; bottom: 15%; width: 340px; margin-left: 630px; background: url(images/bg93.png) 50% 0 no-repeat; opacity: 0; transition: all 1s;}
+        .bg93 p { position: relative; left: -20px; padding-left: 100px; border-left: 1px solid #13AB86;}
+
+        .bg101 { position: absolute; width: 100%; height: 100%; background: url(images/bg101.png) 50% 20% no-repeat;}
+        .bg102 { position: absolute; width: 100%; top: 25%; height: 79px; background: url(images/bg102.png) 50% 0 no-repeat; opacity: 0; -webkit-transform:scale(0.5, 0.5); transform:scale(0.5, 0.5); transition: all 1s;}
+        .go { position: absolute; left: 40%; bottom: 30%; width: 254px; height: 70px; text-indent: -9999px; background-image: url(images/btn.png); opacity: 0; transition: all 1s;}
+
+        .copyright { position: absolute; left: 0; bottom: 10%; width: 100%; text-align: center; font-size: 0;}
+        .copyright a, .copyright span { margin: 0 7px; font-size: 12px; color: #a0a0a0;}
+
+        /* CSS3过度及动画 */
+        .active strong, .active h3 { opacity: 1; -webkit-transform:scale(1, 1); transform:scale(1, 1); transition-delay: 0.7s;}
+        .active .p1 { opacity: 1; transition-delay: 1.7s;}
+
+        .active .bg12 { bottom: 0; opacity: 1; transition-delay: 0.7s; }
+        .active .bg13 { bottom: 0; opacity: 1; transition-delay: 0.7s;}
+        .active .hgroup { opacity: 1; -webkit-transform:scale(1, 1); transform:scale(1, 1); transition-delay: 0.7s;}
+        .active .mail { top: 25px; transition-delay: 0.7s;}
+        .active .p11 { opacity: 1; transition-duration: 1s; transition-delay: 1s;}
+
+        .active .bg21 { opacity: 1; margin-left: -608px; transition-delay: 0.7s;}
+        .active .bg23 { bottom: 15%; transition-delay: 0.7s;}
+        .active .bg22 { margin-left: -280px; opacity: 1; transition-delay: 0.7s;}
+
+        .active .p3 { margin-left: -480px; opacity: 1; transition-delay: 0.7s;}
+        .active .bg31, .active .bg32 { opacity: 1; transition-delay: 1s;}
+        .active .bg33 { margin-left: -120px; opacity: 1; transition-delay: 0.7s;}
+
+        .active .bg41 { bottom: 15%; transition-delay: 0.7s;}
+        .active .bg43 { bottom: 15%; transition-delay: 0.9s;}
+
+        .active .p5 { margin-left: -480px; opacity: 1; transition-delay: 0.7s;}
+        .active .bg51{ opacity: 1; transition-delay: 1s;}
+        .active .bg53 { margin-left: -120px; opacity: 1; transition-delay: 0.7s;}
+
+        .active .bg71 { top: 0; transition-delay: 0.7s;}
+        .active .bg72 { left: 50%; opacity: 1; transition-delay: 0.7s;}
+        .active .txt7 { left: 50%; opacity: 1; transition-delay: 0.7s;}
+
+        .active .bg61 { bottom: 15%; opacity: 1; transition-delay: 0.7s;}
+        .active .txt6 { bottom: 15%; opacity: 1; transition-delay: 1.1s;}
+
+        .active .bg82 { bottom: 260px; margin-left: -280px; opacity: 1; transition-delay: 0.7s;}
+        .active .bg83 { bottom: 380px; margin-left: -430px; opacity: 1; transition-delay: 1s;}
+        .active .bg84 { bottom: 420px; margin-left: -510px; opacity: 1; transition-delay: 1.2s;}
+        .active .p8 { opacity: 1; transition-delay: 1.7s;}
+
+        .active .bg91 { margin-left: -570px; opacity: 1; transition-delay: 0.7s;}
+        .active .bg92 { opacity: 1; transition-delay: 0.8s;}
+        .active .bg93 { margin-left: 230px; opacity: 1; transition-delay: 0.7s;}
+
+        .active .bg102{ opacity: 1; -webkit-transform:scale(1, 1); transform:scale(1, 1); transition-delay: 0.7s;}
+        .active .go { bottom: 30%; opacity: 1; transition-delay: 1.2s;}
+
+        /* for lt ie 10 */
+        .ltie10 strong, .ltie10 h3 { opacity: 1; transform:scale(1, 1); transition-delay: 0.7s;}
+        .ltie10 .p1 { opacity: 1; transition-delay: 1.7s;}
+
+        .ltie10 .bg12 { bottom: 0; opacity: 1; transition-delay: 0.7s; }
+        .ltie10 .bg13 { bottom: 0; opacity: 1; transition-delay: 0.7s;}
+        .ltie10 .hgroup { opacity: 1; transform:scale(1, 1); transition-delay: 0.7s;}
+        .ltie10 .mail { top: 25px; transition-delay: 0.7s;}
+        .ltie10 .p11 { opacity: 1; transition-duration: 1s; transition-delay: 2s;}
+
+        .ltie10 .bg21 { opacity: 1; margin-left: -608px; transition-delay: 0.7s;}
+        .ltie10 .bg23 { bottom: 15%; transition-delay: 0.7s;}
+        .ltie10 .bg22 { margin-left: -280px; opacity: 1; transition-delay: 0.7s;}
+
+        .ltie10 .p3 { margin-left: -480px; opacity: 1; transition-delay: 0.7s;}
+        .ltie10 .bg31, .ltie10 .bg32 { opacity: 1; transition-delay: 1s;}
+        .ltie10 .bg33 { margin-left: -120px; opacity: 1; transition-delay: 0.7s;}
+
+        .ltie10 .bg41 { bottom: 15%; transition-delay: 0.7s;}
+        .ltie10 .bg43 { bottom: 15%; transition-delay: 0.9s;}
+
+        .ltie10 .p5 { margin-left: -480px; opacity: 1; transition-delay: 0.7s;}
+        .ltie10 .bg51{ opacity: 1; transition-delay: 1s;}
+        .ltie10 .bg53 { margin-left: -120px; opacity: 1; transition-delay: 0.7s;}
+
+        .ltie10 .bg71 { top: 0; transition-delay: 0.7s;}
+        .ltie10 .bg72 { left: 50%; opacity: 1; transition-delay: 0.7s;}
+        .ltie10 .txt7 { left: 50%; opacity: 1; transition-delay: 0.7s;}
+
+        .ltie10 .bg61 { bottom: 15%; opacity: 1; transition-delay: 0.7s;}
+        .ltie10 .txt6 { bottom: 15%; opacity: 1; transition-delay: 1.1s;}
+
+        .ltie10 .bg82 { bottom: 260px; margin-left: -280px; opacity: 1; transition-delay: 0.7s;}
+        .ltie10 .bg83 { bottom: 380px; margin-left: -430px; opacity: 1; transition-delay: 1s;}
+        .ltie10 .bg84 { bottom: 420px; margin-left: -510px; opacity: 1; transition-delay: 1.2s;}
+        .ltie10 .p8 { opacity: 1; transition-delay: 1.7s;}
+
+        .ltie10 .bg91 { margin-left: -570px; opacity: 1; transition-delay: 0.7s;}
+        .ltie10 .bg92 { opacity: 1; transition-delay: 0.8s;}
+        .ltie10 .bg93 { margin-left: 230px; opacity: 1; transition-delay: 0.7s;}
+
+        .ltie10 .bg102 { opacity: 1; transform:scale(1, 1); transition-delay: 0.7s;}
+        .ltie10 .go { bottom: 30%; opacity: 1; transform:scale(1, 1); transition-delay: 1.2s;}
+    </style>
+    <script src="http://libs.baidu.com/jquery/1.8.3/jquery.min.js"></script>
+    <script src="http://libs.baidu.com/jqueryui/1.8.22/jquery-ui.min.js "></script>
+    <script src="/jqcool.net-jquery-fullpage/js/jquery.fullPage.min.js"></script>
+    <script>
+        $(function(){
+            if($.browser.msie && $.browser.version < 10){
+                $('body').addClass('ltie10');
+            }
+            $.fn.fullpage({
+                verticalCentered: false,
+                anchors: ['page1', 'page2', 'page3', 'page4', 'page5', 'page6', 'page7','page8'],
+                navigation: true,
+                navigationTooltips: ['登录', '教程', '主页', '电路设计', '波形编辑','在线编辑', '仿真结果', '马上体验']
+            });
+        });
+    </script>
+
+
+</head>
+<body>
+<div class="section section1">
+    <div class="bg"><img src="images/section1.jpg" alt=""></div>
+    <div class="bg11"></div>
+    <div class="bg12"></div>
+    <div class="bg13"></div>
+    <div class="p11">
+        <section class="login-form-wrap">
+            <h1>在线实验系统<%if(locals.errMsg != undefined && locals.errMsg.length > 0){%>
+                <h5>Error! <%=locals.errMsg%></h5>
+                <%}%></h1>
+
+            <form class="login-form" role="form" action="/login/#page1" method="post">
+
+                <!--<h2 class="form-signin-heading">Please sign in</h2>-->
+                <label>
+                    <input type="text" placeholder="UserName" name="userName" required>
+                </label>
+                <label>
+                    <input type="password" placeholder="Password" name="password" required>
+                </label>
+                <input type="checkbox" value = "remember-me"> <font color="#fff" size="4" face:'Lato', sans-serif;>记住我</font>
+                </label>
+
+                <input type="submit" value = "登录">
+            </form>
+        </section>
+
+    </div>
+    <div class="container row">
+        <div class="col-md-5 col-md-offset-4">
+
+        </div>
+    </div>
+
+</div>
+
+<div class="section section2">
+    <div class="bg"><img src="images/section2.jpg" alt=""></div>
+    <div class="bg21"></div>
+    <div class="bg22"></div>
+    <div class="bg23"></div>
+    <strong>[ 教程 ]</strong>
+    <h3>这是一个教程</h3>
+    <p class="p1"></p>
+</div>
+
+<div class="section section6">
+    <div class="bg"><img src="images/section6.jpg" alt=""></div>
+    <div class="bg61"></div>
+    <strong>[ 主页-项目管理 ]</strong>
+    <h3>一目了然，来往邮件更清晰</h3>
+    <div class="txt6">
+        <p>点击+号新建项目</p>
+        <p>项目标签卡为红色表示曾经编译但是没有成功过</p>
+        <p>项目标签卡为蓝色表示没有编译过</p>
+        <p>项目标签卡为黄色表示编译曾经成功过，但是上一次编译错误</p>
+        <p>项目标签卡为绿色表示上一次编译是成功的</p>
+    </div>
+</div>
+
+<div class="section section3">
+    <div class="bg"><img src="images/section3.jpg" alt=""></div>
+    <div class="bg31"></div>
+    <div class="bg32"></div>
+    <div class="bg33"></div>
+    <strong>[在线图形化电路设计]</strong>
+    <h3>心随眼动，感官直接体验</h3>
+    <p class="p3"></p>
+</div>
+
+<div class="section section4">
+    <div class="bg"><img src="images/section4.jpg" alt=""></div>
+    <div class="bg41"></div>
+    <div class="bg43"></div>
+    <strong>[波形编辑]</strong>
+    <h3>美轮美奂，百变尽随你心</h3>
+    <p class="p1"></p>
+</div>
+
+<div class="section section5">
+    <div class="bg"><img src="images/section5.jpg" alt=""></div>
+    <strong>[在线编辑]</strong>
+    <h3>灵活机变，全面为你而生</h3>
+    <div class="bg51">
+    </div>
+    <div class="bg53">
+    </div>
+    <div class="bg54">
+    </div>
+</div>
+
+<div class="section section7">
+    <div class="bg"><img src="images/section7.jpg" alt=""></div>
+    <div class="bg71"></div>
+    <div class="bg72"></div>
+    <div class="bg73"></div>
+    <strong>[ 仿真结果图形化 ]</strong>
+    <h3>一目了然，来往邮件更清晰</h3>
+    <div class="txt7">
+        <p>拖动滑动条可缩放拖动波形</p>
+        <p>鼠标在波形上滑动时可显示对应时间所有信号数值</p>
+    </div>
+</div>
+
+<div class="section section10">
+    <div class="bg"><img src="images/section10.jpg" alt=""></div>
+    <div class="bg101"></div>
+    <div class="bg102"></div>
+    <a class="go" href="/login">马上体验</a>
+    <p class="copyright">
+        <span>Engineer Drawing © 2016 </span>
+    </p>
+</div>
+
+
+
+
+
+</body>
+</html>

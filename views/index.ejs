@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title><%= title %></title>
+    <link rel='stylesheet' href="/bower_components/bootstrap/dist/css/bootstrap.min.css" />
+    <link href="https://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">
+    <script src="/bower_components/jquery/dist/jquery.min.js"></script>
+    <script src="/bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+    <script src="/public/js/animation.js"></script>
+    <link rel="stylesheet" href="/public/stylesheets/circleBtn.css"/>
+    <link rel="stylesheet" href="/public/stylesheets/buttons.css" />
+    <!--<script src="/public/bootstrap-4.0.0-alpha.5-dist/js/bootstrap.min.js"></script>-->
+    <!--<script src="/bower_components/bootstrap/js/modal.js"></script>-->
+    <style>
+      #projectCreate{
+        bottom: 30px;
+        right: 30px;
+        position:fixed;
+      }
+      .cc-selector input{
+        margin:0;padding:0;
+        -webkit-appearance:none;
+        -moz-appearance:none;
+        appearance:none;
+      }
+      .visa{background-image:url(/images/drag.png);}
+      .mastercard{background-image:url(/images/code.png);}
+      .express{background-image:url(/images/cpu.png);}
+
+      .cc-selector input:active +.drinkcard-cc{opacity: .9;}
+      .cc-selector input:checked +.drinkcard-cc{
+        -webkit-filter: none;
+        -moz-filter: none;
+        filter: none;
+      }
+      .drinkcard-cc{
+        border-radius: 8px;
+        cursor:pointer;
+        background-size:contain;
+        background-repeat:no-repeat;
+        display:inline-block;
+        width:120px;height:84px;
+        -webkit-transition: all 100ms ease-in;
+        -moz-transition: all 100ms ease-in;
+        transition: all 100ms ease-in;
+        -webkit-filter: brightness(1) grayscale(1) opacity(.7);
+        -moz-filter: brightness(1) grayscale(1) opacity(.7);
+        filter: brightness(1) grayscale(1) opacity(.7);
+      }
+      .drinkcard-cc:hover{
+        -webkit-filter: brightness(1.2) grayscale(.5) opacity(.9);
+        -moz-filter: brightness(1.2) grayscale(.5) opacity(.9);
+        filter: brightness(1.2) grayscale(.5) opacity(.9);
+      }
+
+      /* Extras */
+      a:visited{color:#888}
+      a{color:#444;text-decoration:none;}
+      p{margin-bottom:.3em;}
+    </style>
+  </head>
+  <body class="frosted-glass" onload="clearInto()" onunload="blurOut()">
+  <% include navbar.ejs %>
+  <br>
+  <br>
+  <br>
+
+  <% if (!locals.hasLogin) { %>
+  <div class="container">
+    <div class="jumbotron">
+      <h1>Please Login</h1>
+      <p>Online Experiment Environment for Digital Circuit</p>
+      <p><a class="btn btn-primary btn-lg" href="/login" role="button">Login</a></p>
+    </div>
+  </div>
+  <%} else {%>
+    <div class="container">
+      <!--<button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#ProjectCreateModal">-->
+        <!--Create a New Project-->
+      <!--</button>-->
+      <!--<button id="projectCreate" type="button" class="btn btn-primary btn-circle btn-lg" data-toggle="modal" data-target="#ProjectCreateModal">-->
+        <!--<span class="glyphicon glyphicon-plus"></span>-->
+      <!--</button>-->
+
+      <button style="z-index: 99999" id="projectCreate" class="button button-primary button-circle button-jumbo" data-toggle="modal" data-target="#ProjectCreateModal">
+        <i class="fa fa-plus"></i>
+      </button>
+
+
+      <div class="page-header">
+        <h1>Homework<small> teacher-created projects</small></h1>
+      </div>
+      <%if(locals.homeworkList == undefined || locals.homeworkList.length == 0){%>
+      <div class="jumbotron">
+        <p>No Homework</p>
+      </div>
+      <%}else{%>
+      <div class="row">
+        <%
+          var status2Color = new Map();
+          status2Color.set(0, "panel-success");
+          status2Color.set(1, "panel-info");
+          status2Color.set(2, "panel-warning");
+          status2Color.set(3, "panel-danger");
+        for(var i = 0; i < locals.homeworkList.length; ++ i){
+          var nowProject = locals.homeworkList[i];
+        %>
+        <%console.log(nowProject.compileStatus)%>
+        <div class="col-md-3">
+          <div class="panel <%=status2Color.get(nowProject.compileStatus)%>">
+            <div class="panel-heading">
+              <h3 class="panel-title">
+                <%=nowProject.projectName%>
+                <%if(nowProject.type == 0){%>
+                <span class="glyphicon glyphicon-move pull-right"></span>
+                <%}else{%>
+                <span class="glyphicon glyphicon-edit pull-right"></span>
+                <%}%>
+              </h3>
+            </div>
+
+            <div class="panel-body">
+              <h3><%=nowProject.topEntityName%></h3>
+              <p>simulated by <h4><%=nowProject.inputFile%></h4></p>
+              <p><small>Deadline:</small><%=nowProject.homework.deadline%></p>
+            </div>
+
+
+            <div class="panel-footer justified">
+              <% var s = "/project?projectId=" + nowProject._id; %>
+              <a class="button button-primary button-circle button-small" href="<%=s%>" role="button">
+                <i class="fa fa-eye" aria-hidden="true"></i>
+              </a>
+
+              <%s = "/submit/homework?projectId=" + nowProject._id;%>
+              <a class="btn btn-circle btn-sm btn-primary" href="<%=s%>" role="button">
+                <span class="glyphicon glyphicon-list"></span>
+              </a>
+              <!--<%s = "/projectSet?projectId=" + nowProject._id;%>-->
+              <!--<a class="btn btn-circle btn-sm btn-warning" href="<%=s%>" role="button">-->
+              <!--<span class="glyphicon glyphicon-cog"></span>-->
+              <!--</a>-->
+            </div>
+          </div>
+
+        </div>
+
+        <%}%>
+      </div>
+      <%}%>
+
+
+
+
+
+
+      <!-- play ground -->
+      <div class="page-header">
+        <h1>Playground<small> self-created projects</small></h1>
+      </div>
+          <%if(locals.projectList == undefined || locals.projectList.length == 0){%>
+            <div class="jumbotron">
+              <p>No Project</p>
+            </div>
+          <%}else{%>
+      <div class="row">
+              <%
+                var status2Color = new Map();
+                status2Color.set(0, "panel-success");
+                status2Color.set(1, "panel-info");
+                status2Color.set(2, "panel-warning");
+                status2Color.set(3, "panel-danger");
+              for(var i = 0; i < locals.projectList.length; ++ i){
+                var nowProject = locals.projectList[i];
+              %>
+              <%console.log(nowProject.compileStatus)%>
+              <div class="col-md-3">
+                <div class="panel <%=status2Color.get(nowProject.compileStatus)%>">
+                  <div class="panel-heading">
+                    <h3 class="panel-title">
+                      <%=nowProject.projectName%>
+                      <%if(nowProject.type == 0){%>
+                        <span class="glyphicon glyphicon-move pull-right"></span>
+                      <%}else if(nowProject.type == 1){%>
+                        <span class="glyphicon glyphicon-edit pull-right"></span>
+                      <%} else if(nowProject.type == 2){%>
+                      <span class="glyphicon glyphicon-asterisk pull-right"></span>
+                      <%}%>
+                    </h3>
+                  </div>
+
+                  <div class="panel-body">
+                    <h3><%=nowProject.topEntityName%></h3>
+                    <p>simulated by <h4><%=nowProject.inputFile%></h4></p>
+
+                  </div>
+
+
+                  <div class="panel-footer justified">
+                    <% var s = "/project?projectId=" + nowProject._id; %>
+                    <a class="button button-primary button-circle button-small" href="<%=s%>" role="button">
+                      <i class="fa fa-eye" aria-hidden="true"></i>
+                    </a>
+
+                    <!--<%s = "/deleteProject?projectId=" + nowProject._id;%>-->
+                    <!--<a class="btn btn-circle btn-sm btn-danger" href="<%=s%>" role="button">-->
+                      <!--<span class="glyphicon glyphicon-remove"></span>-->
+                    <!--</a>-->
+                    <button type="button" class="btn btn-circle btn-sm btn-danger" onclick="projectDelete('<%=nowProject._id%>')">
+                      <span class="glyphicon glyphicon-remove"></span>
+                    </button>
+
+
+
+                    <%s = "/submit?projectId=" + nowProject._id;%>
+                    <a class="btn btn-circle btn-sm btn-primary" href="<%=s%>" role="button">
+                      <span class="glyphicon glyphicon-list"></span>
+                    </a>
+                    <!--<%s = "/projectSet?projectId=" + nowProject._id;%>-->
+                    <!--<a class="btn btn-circle btn-sm btn-warning" href="<%=s%>" role="button">-->
+                      <!--<span class="glyphicon glyphicon-cog"></span>-->
+                    <!--</a>-->
+                  </div>
+                </div>
+
+              </div>
+
+              <%}%>
+      </div>
+          <%}%>
+    </div>
+  <%}%>
+
+  <div class="modal fade" id="ProjectCreateModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+          <h4 class="modal-title" id="myModalLabel">New Project</h4>
+        </div>
+        <form class="form-horizontal" id="CreateProjectForm" role="form" method="post" action="/createProject">
+          <div class="modal-body">
+            <div class="form-group">
+              <label class="col-sm-3 control-label">Project Name</label>
+              <div class="col-sm-9">
+                <input name="projectName" type="text" class="form-control" id="ProjectName" placeholder="Project Name" required>
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="col-sm-3 control-label">Top Entity</label>
+              <div class="col-sm-9">
+                <input name="topEntity" type="text" class="form-control" id="topEntity" placeholder="Top Entity" required>
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="col-sm-3 control-label">Simulate File</label>
+              <div class="col-sm-9">
+                <input name="inputFile" type="text" class="form-control" id="inputFile" placeholder="Simulate File" required>
+              </div>
+            </div>
+
+            <hr>
+
+            <div class="form-group">
+              <label class="col-sm-3 control-label">Project Type</label>
+
+              <div class="cc-selector col-sm-9">
+                <input type="radio" name="projectType" id="drag" value="0" checked />
+                <label class="drinkcard-cc visa" for="drag"></label>
+                <input type="radio" name="projectType" id="edit" value="1" />
+                <label class="drinkcard-cc mastercard" for="edit"></label>
+                <input type="radio" name="projectType" id="cpu" value="2" />
+                <label class="drinkcard-cc express" for="cpu"></label>
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            <button type="submit" class="btn btn-primary">Create Project</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  </body>
+
+  <script type="text/javascript">
+  function projectDel(obj, projectId) {
+    $.ajax({
+      type: "post",
+      url: "/deleteProject",
+      data: {
+        projectId: projectId
+      },
+      dataType: 'json',
+      success: function (data) {
+        alert("success");
+        $(obj).parents("div.panel").remove();
+        if($("div.row div.col-md-4 div.panel-group div.panel").length == 0)
+          $("div.row div.col-md-4").html("<div class=\"jumbotron\"><p>No Project</p></div>");
+      },
+
+      error: function (e) {
+        alert(e.message);
+      }
+
+    });
+  }
+
+  </script>
+
+<script src="../node_modules/bootbox/bootbox.min.js"></script>
+<script>
+  function projectDelete(projectId){
+    bootbox.confirm({
+      message: "Sure to delete the project? You can not undo this action.",
+      size: 'small',
+      buttons: {
+        confirm: {
+          label: 'Yes',
+          className: 'btn-danger'
+        },
+        cancel: {
+          label: 'No',
+          className: 'btn-success'
+        }
+      },
+      callback: function (res) {
+        if(res == true){
+          window.location.href= "/deleteProject?projectId=" + projectId;
+        }
+      }
+    });
+  }
+
+  $("#CreateProjectForm").on("submit", function () {
+    $.ajax({
+      type: "post",
+      url: "/createProject",
+      data: $("#CreateProjectForm").serialize(),
+      dataType: "json",
+      success: function (data) {
+        window.location.href = "/project?projectId=" + data.projectId;
+      },
+      error: function (e) {
+        console.log(e);
+        alert(e.responseText);
+      }
+    });
+
+    return false;
+  });
+
+</script>
+
+</html>

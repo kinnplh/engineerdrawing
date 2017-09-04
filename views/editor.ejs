@@ -1,0 +1,656 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Editor</title>
+    <link rel='stylesheet' href="/bower_components/bootstrap/dist/css/bootstrap.min.css" />
+    <script src="/bower_components/jquery/dist/jquery.min.js"></script>
+
+
+    <script src="/public/js/animation.js"></script>
+    <link rel="stylesheet" href="/public/stylesheets/buttons.css"/>
+    <link rel="stylesheet" href="/public/stylesheets/circleBtn.css" />
+    <style type="text/css" media="screen">
+        a i {
+            padding-right: 5px;
+        }
+        #filetree {
+            float: left;
+        }
+        #tabEditor {
+            position: absolute;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            left: 0;
+
+            margin-top: 109px;
+            margin-left: 15%;
+            background-color: #F1F2F4;
+            font-family: arial;
+            width: 85%;
+        }
+        .contact p {
+            margin: 0 0 10px 0;
+        }
+        .contact-list .panel-body {
+            padding: 0;
+        }
+        .contact-list .ui-list-view {
+            border: none;
+        }
+        .name, .email {
+            word-wrap: break-word;
+        }
+        #listContainer {
+            position: absolute;
+            bottom: 0;
+            margin-left: 0;
+            width:15%;
+            z-index:999;
+        }
+
+        #closeButton, #openButton{
+            width:16px;
+            height:20px;
+
+            white-space:nowrap;
+        }
+        #searchBar {
+            width:80%;
+            white-space:nowrap;
+        }
+        #openButtonContainer {
+            position: absolute;
+            bottom: 0;
+            margin-left: 0;
+        }
+    </style>
+    <!-- FileTree -->
+    <link href="https://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">
+    <link href="/FileTree/dist/ez-file-tree.min.css" rel="stylesheet">
+    <script type="text/javascript" src="/FileTree/src/jquery.min.js"></script>
+    <script src="/FileTree/src/bootstrap.min.js"></script>
+    <script src="/FileTree/src/angular.js"></script>
+    <script src="/FileTree/src/js/ez-file-tree.js"></script>
+    <script src="/FileTree/dist/ez-file-tree.tpl.js"></script>
+    <script src="/FileTree/src/ez-object2array.min.js"></script>
+
+    <!-- hhEditor -->
+    <script src="../hhEditor/bower_components/angular/angular.min.js"></script>
+    <!--<script src="../hhEditor/bower_components/ace-builds/src-min/ace.js"></script>-->
+    <script src="../hhEditor/bower_components/firebase/firebase.js"></script>
+    <script src="../hhEditor/bower_components/angularfire/dist/angularfire.min.js"></script>
+    <link rel="stylesheet" href="../hhEditor/bower_components/firepad/dist/firepad.css" />
+    <script src="../hhEditor/bower_components/firepad/dist/firepad.js"></script>
+    <link rel="stylesheet" href="../hhEditor/bower_components/ng-sortable/dist/ng-sortable.min.css" />
+    <script src="../hhEditor/bower_components/ng-sortable/dist/ng-sortable.min.js"></script>
+    <link rel="stylesheet/less" type="text/css" href="../views/hhEditor.css">
+    <script type="text/javascript" src="../views/hhEditor.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/less.js/2.4.0/less.min.js"></script>
+
+    <!-- errorList -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+    <link rel="stylesheet" href="../ui-listView/dist/ui-listView.css"/>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.3.17/angular.min.js"></script>
+    <script src="../ui-listView/dist/ui-listView.js"></script>
+    <script src="../ui-listView/examples/contactList.js"></script>
+    <script type="text/javascript">
+        angular.module('HackhandsApp', ['hhUI'])
+                .controller('demo', function($scope){
+                    $scope.editorConfig = {
+                        firebase: 'https://hhui.firebaseio.com/hhEditor/'+fbNamespace+'/',
+                        syntax: 'VHDL',
+                        //theme: 'ace/theme/github',
+                        readOnly: false,
+                        initialText:'--There are some tips about shortcuts!\n'+
+                                '   save                    Ctrl + S\n'+
+                                '   fold/unfold             F2\n'+
+                                '   comment/uncomment       Ctrl + /\n'+
+                                '   gotoLine                Ctrl + L\n',
+                        initialSyntax:'VHDL'
+                    }
+                });
+        angular.module('myApp', ['ez.fileTree'])
+                .controller('DemoCtrl', ['$scope', '$q', '$timeout', function($scope, $q, $timeout) {
+
+                    $scope.$on('ez-file-tree.check', function(e, data) {
+                        alert('file checked' + data.id);
+                    });
+
+                    $scope.$on('ez-file-tree.uncheck', function(e, data) {
+                        alert('file unchecked' + data.id);
+                    });
+
+                    $scope.getChildren = function(data) {
+                        var children;
+                        var returnArray = Math.floor(Math.random()*10) % 2 === 0;
+                        var deferred = $q.defer();
+
+                        console.log('simulate http request to get children for', data);
+
+                        $timeout(function() {
+                            if (returnArray) { // filepicker accepts both arrays & objects
+                                children = [];
+                            } else {
+                                children = {};
+                            }
+
+                            if (typeof data._parent === 'undefined' || typeof data._parent._parent === 'undefined' || typeof data._parent._parent._parent === 'undefined' || typeof data._parent._parent._parent._parent === 'undefined' || typeof data._parent._parent._parent._parent._parent === 'undefined') { // cap depth at 4
+
+                                var words = ['Rock', 'Paper', 'Scissor', 'airplane', 'bulldozer', 'guitar', 'walking', 'this', 'makes', 'no', 'sense', 'why', 'you', 'are', 'playing', 'move', 'get', 'out', 'sausage', 'blubber', 'pencil', 'cloud', 'moon', 'water', 'computer', 'school', 'network', 'hammer', 'walking', 'violently', 'mediocre', 'literature', 'chair', 'two', 'window', 'cords', 'musical', 'zebra', 'xylophone', 'penguin', 'home', 'dog', 'final', 'ink', 'teacher', 'fun', 'website', 'banana', 'uncle', 'softly', 'mega', 'ten', 'awesome', 'attatch', 'blue', 'internet', 'bottle', 'tight', 'zone', 'tomato', 'prison', 'hydro', 'cleaning', 'telivision', 'send', 'frog', 'cup', 'book', 'zooming', 'falling', 'evily'];
+                                var count = Math.floor(Math.random()*10);
+                                var child;
+
+                                for (var i=0; i < count; i++) {
+                                    child = {
+                                        id: Math.floor(Math.random()*1111),
+                                        name: words[Math.floor(Math.random()*60)] + ' ' + words[Math.floor(Math.random()*60)],
+                                        type: (i + 1) % 2 ? 'folder' : 'file'
+                                    };
+
+                                    if (returnArray) {
+                                        children.push(child);
+                                    } else {
+                                        children[child.id] = child;
+                                    }
+                                }
+                            }
+
+                            deferred.resolve(children);
+                        }, 300);
+
+                        return deferred.promise;
+                    };
+
+
+                    <!--文件夹内容-->
+                    $scope.folder = getFileTree1();
+                }])
+                .filter('stringify', function() {
+                    function getSerialize (fn, decycle) {
+                        var seen = [], keys = [];
+                        decycle = decycle || function(key, value) {
+                                    return '[Parent REFERENCE]: ' + value.id;
+                                };
+                        return function(key, value) {
+                            var ret = value;
+                            if (typeof value === 'object' && value) {
+                                if (seen.indexOf(value) !== -1)
+                                    ret = decycle(key, value);
+                                else {
+                                    seen.push(value);
+                                    keys.push(key);
+                                }
+                            }
+                            if (fn) ret = fn(key, ret);
+                            return ret;
+                        }
+                    }
+
+                    function getPath (value, seen, keys) {
+                        var index = seen.indexOf(value);
+                        var path = [ keys[index] ];
+                        for (index--; index >= 0; index--) {
+                            if (seen[index][ path[0] ] === value) {
+                                alert("value");
+                                value = seen[index];
+                                path.unshift(keys[index]);
+                            }
+                        }
+                        return '~' + path.join('.');
+                    }
+
+                    function stringify(obj, fn, spaces, decycle) {
+                        return JSON.stringify(obj, getSerialize(fn, decycle), spaces);
+                    }
+
+                    stringify.getSerialize = getSerialize;
+
+                    return function(ob) {
+                        return stringify(ob, undefined, 4);
+                    };
+                });
+        angular.element(document).ready(
+                function (){
+                    angular.bootstrap(document.getElementById("tabEditor"), ['HackhandsApp']);
+                    angular.bootstrap(document.getElementById("listContainer"), ['app']);
+                }
+        );
+    </script>
+
+</head>
+<body bgcolor="black" class="frosted-glass" onload="clearInto()" onunload="blurOut()">
+    <% include navbar.ejs %>
+    <br>
+    <br>
+    <br>
+    <div class="container">
+        <div class="row">
+            <form id="fileUpload" class="form-inline fileUpload" role="form" method="post" action="/file/uploadFile" enctype="multipart/form-data">
+                <div class="col-md-3">
+                <div class="form-group">
+                    <button type="button" class="btn btn-danger btn-sm btn-circle" onclick="uploadText()">
+                        <span class="glyphicon glyphicon-floppy-disk"></span>
+                    </button>
+                </div>
+                <div class="form-group">
+                    <button type="button" class="btn btn-warning btn-sm btn-circle" onclick="$('#btnUpload').click()">
+                        <span class="glyphicon glyphicon-import"></span>
+                    </button>
+                </div>
+
+
+                <div class="form-group hiddenObj">
+                    <input id="btnUpload" name="inputFile" class="btn-warning btn btn-lg fileInput btn-circle " onchange="$('#fileUpload').submit()" type="file" multiple="mutiple" >
+                </div>
+                    <input type="hidden" name="projectId" value="<%=locals.projectId%>">
+
+                <%if(locals.homework == undefined){%>
+                    <div class="form-group">
+                        <button type="button" class="btn btn-success btn-sm btn-circle" onclick="simulate()">
+                            <span class="glyphicon glyphicon-play"></span>
+                        </button>
+                    </div>
+
+                    <div class="form-group">
+                        <a type="button" class="btn btn-info btn-sm btn-circle" href="/submit?projectId=<%=locals.projectId%>">
+                            <span class="glyphicon glyphicon-list-alt"></span>
+                        </a>
+                    </div>
+                <div class="form-group">
+                    <button type="button" class="btn btn-primary btn-circle btn-sm" data-toggle="modal" data-target="#ProjectSettingChange">
+                        <span class="glyphicon glyphicon-cog"></span>
+                    </button>
+                </div>
+                <%}
+                if(locals.homework != undefined){%>
+                    <div class="form-group">
+                        <button type="button" class="btn btn-success btn-sm btn-circle" onclick="submitHomework()">
+                            <span class="glyphicon glyphicon-cloud-upload"></span>
+                        </button>
+                    </div>
+                    <div class="form-group">
+                        <a type="button" class="btn btn-info btn-sm btn-circle" href="/submit/homework?projectId=<%=locals.projectId%>&homeworkId=<%=locals.homework._id%>">
+                            <span class="glyphicon glyphicon-tasks"></span>
+                        </a>
+                    </div>
+                <%}%>
+                </div>
+
+            </form>
+
+        </div>
+    </div>
+
+    <!-- 文件树！！-->
+    <div class="container" ng-controller="DemoCtrl" ng-app="myApp" id="filetree">
+        <!-- Tab panes -->
+        <div class="tab-content">
+            <div class="tab-pane active" id="demo1">
+                <div class="row">
+                    <div class="col-lg-6">
+                        <!--<h3>Folder 1</h3>-->
+                        <div ez-file-tree="folder"></div>
+                    </div>
+                    <div class="col-lg-6">
+                        <!--<h5>Folder1 Dump</h5>-->
+                        <!--<pre style="font-size: 10px;">{{ folder | stringify }}</pre>-->
+                    </div>
+                </div>
+            </div>
+            <div class="tab-pane" id="settings"></div>
+        </div>
+    </div>
+
+    <!-- tabEditor -->
+    <div class="container" ng-controller="demo"  ng-app="HackhandsApp" id="tabEditor">
+        <hh-editor settings="editorConfig" id="tabeditor"></hh-editor>
+    </div>
+
+    <!--errorList-->
+    <div class="container" id = "listContainer" ng-app="app" ng-controller="SampleApp" >
+        <div class="contact-list panel panel-default" >
+            <div class="panel-heading">
+                <input nowrap id="searchBar" class="form-control" ng-model="search.name" placeholder="Search Name.."/>
+                <input id="closeButton"type="image" src="../ui-listView/examples/Delete.png" />
+            </div>
+            <div class="panel-body">
+                <div class="contact ui-list-view-striped">
+                    <div ng-repeat="contact in contacts| filter:search" ng-class="{ selected: contact.selected }" ng-click="goToErrorLine(contact)">
+                    <p class="name"><strong>{{ contact.name }}</strong></p>
+                        <div class="email">{{ contact.email }}</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="openButtonContainer">
+        <input id="openButton"type="image" src="../ui-listView/examples/Delete.png" />
+    </div>
+
+    <div class="modal fade" id="ProjectSettingChange" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                    <h4 class="modal-title" id="myModalLabel">Project Settings</h4>
+                </div>
+                <form id="ProjectSetForm" role="form" method="post" action="/project/projectSettingChange">
+                    <div class="modal-body">
+                        <div class="form-horizontal">
+                            <label>Top Entity</label>
+                            <br/>
+                            <% if(locals.topEntity == undefined || locals.topEntity == ""){%>
+                                <input name="topEntityName" type="text" class="form-control" placeholder="Project Name" required>
+                            <%}else {%>
+                               <input name="topEntityName" type="text" class="form-control" value="<%=locals.topEntity%>" required>
+                            <%}%>
+                            <hr>
+                            <label>Simulate File</label>
+                            <% if(locals.simulateFile == undefined || locals.simulateFile == ""){%>
+                            <input name="inputFile" type="text" class="form-control" placeholder="Project Name" required>
+                            <%}else {%>
+                            <input name="inputFile" type="text" class="form-control" value="<%=locals.simulateFile%>" required>
+                            <%}%>
+                            <input name="projectId" type="hidden" value="<%=locals.projectId%>">
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button id="closeM" type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary">Apply</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+<!-- ace editor settings-->
+<script src="/TextEditor/src-noconflict/ace.js" type="text/javascript" charset="utf-8"></script>
+<script src="/TextEditor/src-noconflict/ext-language_tools.js"></script>
+<script src="http://cdnjs.cloudflare.com/ajax/libs/jquery.form/3.51/jquery.form.min.js"></script>
+<script>
+    $(document).ready(function(){
+
+        $("#closeButton").click(function(){
+            $("#listContainer").slideToggle();
+            $("#openButton").show();
+
+        })
+        $("#openButton").click(function(){
+            $("#listContainer").slideToggle();
+            $("#openButton").hide();
+
+        })
+        $("#listContainer").hide()
+    });
+    var getFileTree1 = function() {
+        var a = "<%= locals.fileTree %>".replace(/&#34;/g, "\"");
+        // 未解决路径分隔符，windows需系统执行下面语句，如需要可以删除
+        a = a.replace(/\\/g, "/");
+        var tem = JSON.parse(a);
+        return tem;
+    }
+    function getFileTree(callback) {
+        $.ajax({
+            type: "post",
+            url: "/project/getFileTree",
+            data:{
+                projectId: "<%=locals.projectId%>"
+            },
+            dataType: 'json',
+            success: function (data) {
+                var fileTree = data.fileTree;
+                callback(fileTree);
+            },
+            error: function (e) {
+                alert("error");
+            }
+
+        });
+    }
+    var FileTreeList;
+    var editor;
+    var ErrorList;
+    // 编辑器设置
+    var editor_setting = function(editor) {
+        ace.require("ace/ext/language_tools");
+        editor.setFontSize(16);
+        editor.setTheme("ace/theme/monokai");
+        editor.getSession().setMode("ace/mode/vhdl");
+        editor.setOptions({
+            enableBasicAutocompletion: true,
+            enableSnippets: true,
+            enableLiveAutocompletion: true
+        });
+        editor.commands.addCommand({
+            name: "save",
+            bindKey: {win: "Ctrl-S", mac: "Command-Option-S"},
+            exec: function (editor) {
+                console.log("Saving the vhd file!");
+
+                editor.gotoLine(1,1,true);
+                uploadText();
+            }
+        });
+        editor.commands.addCommand({
+            name: "delete",
+            bindKey: {win: "Ctrl-Shift-D", mac: "Option-D"},
+            exec: function (editor) {
+                console.log("Deleting the vhd file!");
+                deleteFile();
+            }
+        });
+    }
+    //当前选中的文件
+    var activate_file;
+    // 读取文件！
+    function setEditor(File) {
+        var pathToFile = File.path;
+        //console.log("<%=locals.projectId%>");
+        $.ajax({
+            type: "post",
+            url: '/editor/getFileContent',
+            data: {
+                path: pathToFile, // user and project info is stored in the server
+                projectId: "<%=locals.projectId%>"
+            },
+            dataType: 'json',
+            success: function (data) {
+                Scope.add(Scope.getSyntax("VHDL"),data.content,File.name);
+            },
+            error: function (e) {
+                console.log(e);
+                alert("error");
+            }
+        });
+    }
+    // 上传文件
+    $(document).ready(function () {
+        $("#fileUpload").submit(function (e) {
+            //e.preventDefault();
+            $(this).ajaxSubmit({
+
+                error: function(xhr) {
+                    console.log('Error: ' + xhr.status);
+                },
+                success: function(response) {
+                    alert(response.status);
+                    getFileTree(function(fileTree) {
+                        FileTreeList.tree.children = (JSON.parse(fileTree)).children;
+                        FileTreeList.select(null,FileTreeList.tree.children[FileTreeList.tree.children.length+1]);
+                    });
+                }
+            });
+            return false;
+        });
+        return false;
+    });
+
+    // 保存vhd
+
+    function uploadText() {
+        var text = window.aces[Scope.tabs[Scope.tabStatus.focus].id].getValue();
+        if (!Scope.tabs[Scope.tabStatus.focus]) {
+            alert("No file chosen!");
+            return;
+        }
+
+        $.ajax({
+            type: "post",
+            url: "/file/uploadEditor",
+            data: {
+                text: text,
+                filePath: activate_file.path,
+                name:Scope.tabs[Scope.tabStatus.focus].title,
+                projectId: "<%=locals.projectId%>"
+            },
+            dataType: 'json',
+            success: function (data) {
+                getFileTree(function(fileTree) {
+                    FileTreeList.tree.children = (JSON.parse(fileTree)).children;
+                    for (var i=0; i<FileTreeList.tree.children.length; i++) {
+                        //console.log(FileTreeList.tree.children[i].name);
+                        if (Scope.tabs[Scope.tabStatus.focus].title == FileTreeList.tree.children[i].name) {
+                            activate_file.type = "file";
+                            activate_file.name = FileTreeList.tree.children[i].name;
+                            activate_file.path = FileTreeList.tree.children[i].path;
+                            Scope.tabs[Scope.tabStatus.focus].file =  activate_file;
+                            console.log(activate_file);
+                            //Scope.close(null,Scope.tabStatus.focus);
+                            FileTreeList.select(null, FileTreeList.tree.children[i]);
+                            break;
+                        }
+                    }
+                });
+                alert("Save the file successfully!");
+            },
+
+            error: function (e) {
+                alert("error");
+            }
+
+        });
+    }
+    // 删除文件
+    function deleteFile() {
+        $.ajax({
+            type: "post",
+            url: "/editor/deleteFile",
+            data: {
+                filePath: activate_file.path,
+                projectId: "<%=locals.projectId%>"
+            },
+            dataType: 'json',
+            success: function (data) {
+                alert("Delete the file successfully!");
+                getFileTree(function(fileTree) {
+                    Scope.close(null, Scope.tabStatus.focus);
+                    FileTreeList.tree.children = (JSON.parse(fileTree)).children;
+                    FileTreeList.select(null, FileTreeList.tree.children[FileTreeList.tree.children.length+1]);
+                });
+            },
+            error: function (e) {
+                alert("error");
+            }
+
+        });
+    }
+    <%if(locals.homework != undefined){%>
+    function submitHomework() {
+
+        //console.log(("<%=JSON.stringify( locals.homework)%>".replace(/&#34;/g, "\"")));
+        $.ajax({
+            type: "post",
+            url: "/file/simulate",
+            data:{
+                projectId: "<%=locals.projectId%>",
+                homeworkId: "<%=locals.homework._id%>",
+                filePath: "<%=locals.homework.filePath%>"
+            },
+            dataType: 'json',
+            success: function(data){
+                console.log(data);
+                $('.alert').remove();
+                $('#fileUpload').append(generateNewAlertBox(data.result, data.message));
+                if(data.compileStatus == "danger"){
+                    console.log(data.errors);
+                    ErrorList.update(data.errors);
+                }
+            },
+            error: function (e) {
+                $('.alert').remove();
+                $('#fileUpload').append(generateNewAlertBox("danger", e.message));
+            }
+        });
+        $('.alert').remove();
+        $('#fileUpload').append(generateNewAlertBox("info", "Compiling and simulation processing"));
+    }
+    <%}%>
+
+    function simulate(){
+        $.ajax({
+            type: "post",
+            url: "/file/simulate",
+            data:{
+                projectId: "<%=locals.projectId%>"
+            },
+            dataType: 'json',
+            success: function(data){
+                console.log(data);
+                $('.alert').remove();
+                $('#fileUpload').append(generateNewAlertBox(data.compileStatus, data.message));
+                if(data.compileStatus == "danger"){
+                    console.log(data.errors);
+                    ErrorList.update(data.errors);
+                }
+            },
+            error: function (e) {
+                $('.alert').remove();
+                $('#fileUpload').append(generateNewAlertBox("danger", e.message));
+            }
+        });
+        $('.alert').remove();
+        $('#fileUpload').append(generateNewAlertBox("info", "Compiling and simulation processing"));
+    }
+
+    $('#ProjectSetForm').on("submit", function () {
+        $.ajax({
+            type: "post",
+            url: "/project/projectSettingChange",
+            data: $('#ProjectSetForm').serialize(),
+            dataType: 'json',
+            success: function (data) {
+                console.log(data);
+                //alert("success");
+                $("#ProjectSettingChange").modal('hide');
+            },
+            error: function (err) {
+                alert("error!");
+                console.log(err);
+            }
+        });
+        return false;
+    });
+
+    function randomString(length) {
+        var text = "";
+        var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+        for(var i=0; i < length; i++)
+            text += possible.charAt(Math.floor(Math.random() * possible.length));
+        return text;
+    }
+
+    var fbNamespace = window.location.hash.replace(/#/g, '') || randomString(20);
+    var url = window.location.toString().replace(/#.*/, '') + '#' + fbNamespace;
+    window.location = url;
+
+    function generateNewAlertBox(type, msg) {
+        var res = "<div class='alert alert-"+ type +" alert-dismissible col-md-8' style='vertical-align: middle; display: inline-block; height: 30px; padding-top: 6px; margin: 0px; border: 0px' role='alert'>";
+        res += '<button type="button"  class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>';
+        res += msg;
+        return res;
+    }
+</script>
+

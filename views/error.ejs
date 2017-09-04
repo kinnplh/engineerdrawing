@@ -1,0 +1,6 @@
+<%if(error.status){%>
+<h2><%= error.status %></h2>
+<pre><%= error.stack %></pre>
+<%} else{%>
+<h2><%= error%></h2>
+<%}%>
