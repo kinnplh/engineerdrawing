@@ -46,7 +46,7 @@ router.post('/file/uploadEditor', function (req, res, next) {
     var text = req.body.text;
     project.findById(prjID, function (err, prj) {
         if(originFilePath != "") {
-            if (prj.filePath != path.dirname(originFilePath)) {
+            if (prj.filePath != path.dirname(originFilePath)) { // 文件路径和项目是否匹配
                 console.log("the origin file does not belongs to the project!");
                 res.json({
                     status: "error",
@@ -55,7 +55,7 @@ router.post('/file/uploadEditor', function (req, res, next) {
                 return;
             }
             //delete the origin file
-            if(!fs.existsSync(originFilePath))
+            if(!fs.existsSync(originFilePath)) // 如果不存在原始的文件的话
             {
                 console.log("the origin file does nor exist");
                 res.json({
@@ -64,7 +64,7 @@ router.post('/file/uploadEditor', function (req, res, next) {
                 });
                 return;
             }
-            fs.unlinkSync(originFilePath);
+            fs.unlinkSync(originFilePath); // 删除原始文件
         }
         console.log(newName);
         fs.writeFile(path.join(prj.filePath, newName), text, function (err) {
@@ -245,6 +245,7 @@ router.post('/createProject', function (req, res, next) {
                            if(err)
                                throw err;
                            project.findOne({projectName: newProject.projectName, author: currentUserId},function (err, obj) {
+                               // 我们需要用到工程的主键 _id，因此再次对数据库进行查询。
                                if(err)
                                    res.render('error', {error: err});
                                if(obj == null)
@@ -256,21 +257,22 @@ router.post('/createProject', function (req, res, next) {
                                var PathEntity = "/home/kinnplh/cpuEntity";
                                PathEntity = path.join(PathEntity, obj._id.toString());
                                obj.entityPath = PathEntity;
-                               obj.save(function (err) {
+                               obj.save(function (err) { // 存回数据库，并且对本地的存储数据加以维护
                                    if(err)
                                        res.render('error', {error: err});
                                    process.exec("mkdir " + Path + ";mkdir " + PathEntity, function (err, stdout, stderr){
                                        if(err)
                                            res.render('error', {error: err});
                                        var fileSuffix = "";
-                                        if(obj.type == 1)// editor
-                                            fileSuffix = ".vhd";
+                                       if(obj.type == 1)// editor
+                                        fileSuffix = ".vhd";
                                        var cmd = "touch " + path.join(obj.filePath, obj.topEntityName + fileSuffix);
                                        if(obj.type == 2)
                                            cmd += "; cp " + path.resolve(path.dirname(fs.realpathSync(__filename)),
                                                    '..', './chipInfo/vhdls', './* ') + obj.entityPath;
+                                       // 三种类型的工程对应的 cmd 是不一样的
                                         process.exec(cmd, function (err, stdout, stderr) {
-                                               if(err)
+                                                if(err)
                                                    res.render('error', {error: err});
                                                 if(req.session)
                                                     req.session.user = obj_;

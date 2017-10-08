@@ -62,6 +62,7 @@ exports.upload = function uploadFile(req,res){//just upload files and no simulat
 
    //may be difficult to get rid of variables stored in locals
    console.log(req);
+   // 这里使用了存储在 locals 中的当前 project 的_id，我在想表单里应该已经把工程的_id发过来了。。。不知道为什么会这样写。。。
    project.findById(res.locals.project._id, function (err, retPrj) {
       if(err)
          res.render('error', {error: err});
@@ -98,8 +99,8 @@ exports.upload = function uploadFile(req,res){//just upload files and no simulat
 
 exports.simulate = function (req, res) {
    var prjId = req.body.projectId;
-   var hwId = req.body.homeworkId;//may be undefined
-   var hwPath = req.body.filePath;
+   var hwId = req.body.homeworkId;// may be undefined  仅仅对于 homework
+   var hwPath = req.body.filePath;// may be undefined  仅仅对于 homework
 
    project.findById(prjId, function (err, retPrj) {
       if(err)
@@ -129,9 +130,9 @@ exports.simulate = function (req, res) {
          var process = require('child_process');
          newSubmit.filePath =  path.join("/home/kinnplh/submitFile", newSubmit._id.toString());
          newSubmit.inputFile = path.join(newSubmit.filePath, path.basename(retPrj.inputFile));
-         process.exec("mkdir " + newSubmit.filePath, function (err, stdout, stderr) {
+         process.exec("mkdir " + newSubmit.filePath, function (err, stdout, stderr) { // 建立和这个提交相对应的文件夹
             //var projectPath = retPrj.filePath;
-
+            // 然后将当前存储项目文件的文件夹中的所有文件都拷贝过去
             process.exec("cp -r " + path.join(retPrj.filePath, '*') + ' ' + newSubmit.filePath, function (err, stdout, stderr) {
                console.log("stdout: " + stdout);
                console.log("stderr: " + stderr);
@@ -140,7 +141,7 @@ exports.simulate = function (req, res) {
                   cmd += ";cp " + path.join(hwPath, retPrj.inputFile) + " " + newSubmit.filePath;
 
                process.exec(cmd, function (err, stdout, stderr) {
-                  var compileFiles = retPrj.topEntityName;
+                  var compileFiles = retPrj.topEntityName; // 参与仿真的文件
                   if(retPrj.type == 1 || retPrj.type == 2) {//the compile and simulation of drag and drop only include topEntity and simulation file
                      var fileArray = fs.readdirSync(newSubmit.filePath).filter(function (fileName, id) {
                         if (path.extname(fileName) == ".vhd")
@@ -157,7 +158,9 @@ exports.simulate = function (req, res) {
                            compileFiles = path.basename(ele, '.vhd') + ".vhd " + compileFiles;
                      });
                   }
+                  // compileFiles 的格式： "aaa.vhd bbb.vhd ccc.vhd ddd"，最后一个文件是没有后缀的
                   console.log(compileFiles);
+                  // 执行文件 model.sh
                   process.execFile(path.join(newSubmit.filePath, "model.sh"), [compileFiles, path.basename(newSubmit.inputFile, '.vhd'), "vsim"], {cwd: newSubmit.filePath}, function (err, stdout, stderr) {
 
                      console.log("cmd: " + path.join(newSubmit.filePath, "model.sh") + ' ' + [compileFiles, path.basename(newSubmit.inputFile, '.vhd'), "vsim"]);

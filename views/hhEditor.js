@@ -1,6 +1,6 @@
 'use strict';
 var Scope;
-var activate_file;
+var activate_file; // 当前选中的文件（显示在编辑器中的）
 var Editor;
 angular.module('hhUI', ['ui.sortable', 'firebase'])
 
@@ -84,10 +84,10 @@ angular.module('hhUI', ['ui.sortable', 'firebase'])
 
         $scope.clicked = function(event, key){
           //console.log("clicked");
-          if (event.which == 2)
+          if (event.which == 2) // 我估计是点击了关闭的那个叉叉吧
             return $scope.close(event, key);
 
-          if (key == $scope.tabStatus.focus)
+          if (key == $scope.tabStatus.focus) // 如果正好是当前 focus 的那个文件的话
           {
             if (settings.readOnly)
               return

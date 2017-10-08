@@ -230,6 +230,7 @@
             <form id="fileUpload" class="form-inline fileUpload" role="form" method="post" action="/file/uploadFile" enctype="multipart/form-data">
                 <div class="col-md-3">
                 <div class="form-group">
+                    <!--保存文件-->
                     <button type="button" class="btn btn-danger btn-sm btn-circle" onclick="uploadText()">
                         <span class="glyphicon glyphicon-floppy-disk"></span>
                     </button>
@@ -242,6 +243,7 @@
 
 
                 <div class="form-group hiddenObj">
+                    <!--原来的话就会有什么"未选择文件"之类的  太丑了  将其隐藏掉-->
                     <input id="btnUpload" name="inputFile" class="btn-warning btn btn-lg fileInput btn-circle " onchange="$('#fileUpload').submit()" type="file" multiple="mutiple" >
                 </div>
                     <input type="hidden" name="projectId" value="<%=locals.projectId%>">
@@ -491,24 +493,24 @@
     // 保存vhd
 
     function uploadText() {
-        var text = window.aces[Scope.tabs[Scope.tabStatus.focus].id].getValue();
+        var text = window.aces[Scope.tabs[Scope.tabStatus.focus].id].getValue(); // 该语句可以获得当前编辑器中的文本内容
         if (!Scope.tabs[Scope.tabStatus.focus]) {
             alert("No file chosen!");
             return;
         }
 
-        $.ajax({
-            type: "post",
-            url: "/file/uploadEditor",
-            data: {
-                text: text,
-                filePath: activate_file.path,
-                name:Scope.tabs[Scope.tabStatus.focus].title,
-                projectId: "<%=locals.projectId%>"
+        $.ajax({ // 发送一个异步的请求
+            type: "post", // post 类型
+            url: "/file/uploadEditor", // 路径
+            data: { // 发送的数据
+                text: text, // 文本信息
+                filePath: activate_file.path, // 当前选中文件的原始路径，在服务器会对这个文件进行修改（如果路径为空的话，会新建）
+                name:Scope.tabs[Scope.tabStatus.focus].title, // 该文件的文件名。如果没有改名字的话，就是原始的文件名，否则就是修改的文件名
+                projectId: "<%=locals.projectId%>" // 当前项目的 id。这个变量是在渲染界面的时候传入的
             },
-            dataType: 'json',
-            success: function (data) {
-                getFileTree(function(fileTree) {
+            dataType: 'json', // 预期返回的格式
+            success: function (data) { // 请求成功时的回调函数
+                getFileTree(function(fileTree) { // 向服务器请求文件树，并进行相应的处理
                     FileTreeList.tree.children = (JSON.parse(fileTree)).children;
                     for (var i=0; i<FileTreeList.tree.children.length; i++) {
                         //console.log(FileTreeList.tree.children[i].name);

@@ -82,6 +82,7 @@
         <!--<span class="glyphicon glyphicon-plus"></span>-->
       <!--</button>-->
 
+      <!--界面右下角的加号，会唤出一个模态框ProjectCreateModal 点击出现新建项目设置的框-->
       <button style="z-index: 99999" id="projectCreate" class="button button-primary button-circle button-jumbo" data-toggle="modal" data-target="#ProjectCreateModal">
         <i class="fa fa-plus"></i>
       </button>
@@ -90,28 +91,33 @@
       <div class="page-header">
         <h1>Homework<small> teacher-created projects</small></h1>
       </div>
-      <%if(locals.homeworkList == undefined || locals.homeworkList.length == 0){%>
+      <!--是否有传入 homeworkList 参数，以及列表是不是空的-->
+      <%if(locals.homeworkList == undefined || locals.homeworkList.length == 0){
+        //空的话不会绘制卡片
+      %>
       <div class="jumbotron">
         <p>No Homework</p>
       </div>
-      <%}else{%>
+      <%} else {%>
       <div class="row">
         <%
-          var status2Color = new Map();
+          var status2Color = new Map(); // 项目的状态对应于四种class（实际上只有颜色的区别）
           status2Color.set(0, "panel-success");
           status2Color.set(1, "panel-info");
           status2Color.set(2, "panel-warning");
           status2Color.set(3, "panel-danger");
         for(var i = 0; i < locals.homeworkList.length; ++ i){
-          var nowProject = locals.homeworkList[i];
+          var nowProject = locals.homeworkList[i]; // 对于每一个作业，绘制出相应的卡片
         %>
         <%console.log(nowProject.compileStatus)%>
         <div class="col-md-3">
           <div class="panel <%=status2Color.get(nowProject.compileStatus)%>">
             <div class="panel-heading">
               <h3 class="panel-title">
+                <!--  展示项目名称-->
                 <%=nowProject.projectName%>
-                <%if(nowProject.type == 0){%>
+                <%if(nowProject.type == 0){ %>
+                <!-- 根据不同的类型绘制项目的缩略图-->
                 <span class="glyphicon glyphicon-move pull-right"></span>
                 <%}else{%>
                 <span class="glyphicon glyphicon-edit pull-right"></span>
@@ -127,16 +133,16 @@
 
 
             <div class="panel-footer justified">
-              <% var s = "/project?projectId=" + nowProject._id; %>
+              <% var s = "/project?projectId=" + nowProject._id;%> <!-- 生成进入项目的链接 -->
               <a class="button button-primary button-circle button-small" href="<%=s%>" role="button">
                 <i class="fa fa-eye" aria-hidden="true"></i>
               </a>
 
-              <%s = "/submit/homework?projectId=" + nowProject._id;%>
+              <%s = "/submit/homework?projectId=" + nowProject._id;%><!-- 生成进入项目提交列表的链接 -->
               <a class="btn btn-circle btn-sm btn-primary" href="<%=s%>" role="button">
                 <span class="glyphicon glyphicon-list"></span>
               </a>
-              <!--<%s = "/projectSet?projectId=" + nowProject._id;%>-->
+              <!--<%s = "/projectSet?projectId=" + nowProject._id; %>--> <!--被注释掉的原因是对于作业不允许设置-->
               <!--<a class="btn btn-circle btn-sm btn-warning" href="<%=s%>" role="button">-->
               <!--<span class="glyphicon glyphicon-cog"></span>-->
               <!--</a>-->
