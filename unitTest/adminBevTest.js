@@ -7,11 +7,26 @@ var request = session(app);
 var should = require('should');
 
 describe("test admin", function () {
+    it("should redirect to login page", function(done){
+        request.get('/').expect(302).end(function (err, res) {
+            (res.text == "Found. Redirecting to /login").should.be.ok();
+            done(err);
+        });
+    });
+
     it("should redirect to a admin page", function (done) {
-        request.post('/login').send({
+        request.post('/login').send({ // 发送 post 请求，并发送相应的数据
             userName: "admin",
             password: "admin"
-        }).expect(302).end(function (err, res) {
+        }).expect(302).end(function (err, res) { // 希望返回 302（重定向），并且在结束之后进行检查
+            (res.text == "Found. Redirecting to /admin").should.be.ok();
+            done(err); // 调用了函数 done 保证了在这个回调函数结束之后才会继续向下执行
+        });
+    });
+
+    it("should redirect to a admin page when visit / ", function (done) {
+        request.get('/').expect(302).end(function (err, res) {
+            console.log(res.text);
             (res.text == "Found. Redirecting to /admin").should.be.ok();
             done(err);
         });
